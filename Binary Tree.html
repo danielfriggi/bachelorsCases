@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Binary Tree</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-section select, .input-section input, .input-section button {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .input-section button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+
+        .input-section button:hover {
+            background-color: #0056b3;
+        }
+
+        .tree {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .level {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .node {
+            text-align: center;
+            position: relative;
+            margin: 0 10px;
+        }
+
+        .node span {
+            display: inline-block;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .line {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background-color: #333;
+        }
+
+        .line.left {
+            top: -10px;
+            left: -20px;
+            transform: rotate(-45deg);
+        }
+
+        .line.right {
+            top: -10px;
+            right: -20px;
+            transform: rotate(45deg);
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #eef;
+            border: 1px solid #ccd;
+            border-radius: 4px;
+            max-width: 600px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .results h2 {
+            margin: 0 0 10px;
+        }
+
+        .results p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Binary Tree</h1>
+    <div class="container">
+        <div class="input-section">
+            <input type="number" id="numberInput" placeholder="Enter a number">
+            <select id="nodeSelector">
+                <option value="root">Root</option>
+            </select>
+            <select id="positionSelector">
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+            </select>
+            <button onclick="insertNumber()">Insert Number</button>
+        </div>
+        <div class="tree" id="tree"></div>
+        <div class="results" id="traversalResults">
+            <h2>Traversal Results</h2>
+            <button onclick="preorderTraversal()">Preorder</button>
+            <button onclick="inorderTraversal()">Inorder</button>
+            <button onclick="postorderTraversal()">Postorder</button>
+            <button onclick="levelOrderTraversal()">Level Order</button>
+            <div id="traversalOutput"></div>
+        </div>
+    </div>
+
+    <script>
+        // Tree node constructor
+        class TreeNode {
+            constructor(value, id) {
+                this.value = value; // node value (valor do nó)
+                this.id = id; // node id (id do nó)
+                this.left = null; // left child (filho esquerdo)
+                this.right = null; // right child (filho direito)
+            }
+        }
+    
+        // Binary tree constructor
+        class BinaryTree {
+            constructor() {
+                this.root = null; // tree root (raiz da árvore) (started null / começa nula)
+                this.nodeCount = 0; // node count (contagem de nós) for purposes of generating a unique id for each element (para gerar um id único para cada elemento)
+            }
+    
+            // Method to insert a new node in the tree
+            insert(value, parentId, position) {
+                const newNode = new TreeNode(value, ++this.nodeCount); // create a node with value and id (cria um nó com valor e id)
+                if (!this.root) {
+                    // If the tree is empty, this becomes the root node (se a árvore estiver vazia, esse se torna o nó raiz)
+                    if (parentId !== "root") {
+                        alert("Root node does not exist yet. Add it first."); // Exibe alerta caso o nó raiz ainda não exista
+                        return;
+                    }
+                    this.root = newNode;
+                    this.updateNodeSelector(); // Update node selector (atualiza o seletor de nós)
+                    this.renderTree(); // Re-render the tree (re-renderiza a árvore)
+                    return;
+                }
+    
+                // Find the parent node using the provided id (encontra o nó pai usando o id fornecido)
+                const parentNode = this.findNode(this.root, parseInt(parentId, 10));
+                if (!parentNode) {
+                    alert("Parent node not found."); // Exibe alerta caso o nó pai não seja encontrado
+                    return;
+                }
+    
+                // Insert the node at left or right of the parent, in the selected position (insere o nó à esquerda ou à direita do nó pai, na posição selecionada)
+                if (position === "left" && !parentNode.left) {
+                    parentNode.left = newNode; // Left insertion (inserção à esquerda)
+                } else if (position === "right" && !parentNode.right) {
+                    parentNode.right = newNode; // Right insertion (inserção à direita)
+                } else {
+                    alert(`The ${position} position is already occupied.`); // Alerta se a posição já estiver ocupada
+                    return;
+                }
+    
+                this.updateNodeSelector(); // Update the node selector (atualiza o seletor de nós)
+                this.renderTree(); // Re-render the tree (re-renderiza a árvore)
+            }
+    
+            // Method to find the node by id (método para encontrar o nó pelo id)
+            findNode(node, id) {
+                if (!node) return null; // Base case: non-existent node (caso base: nó inexistente)
+                if (node.id === id) return node; // If the id matches, return the node (se o id for igual, retorna o nó)
+                return this.findNode(node.left, id) || this.findNode(node.right, id); // Recursive search in children (busca recursiva nos filhos)
+            }
+    
+            // Method to update the node selector (método para atualizar o seletor de nós)
+            updateNodeSelector() {
+                const selector = document.getElementById("nodeSelector");
+                selector.innerHTML = '<option value="root">Root</option>'; // Add the option for root (adiciona a opção de raiz)
+                this.populateNodeSelector(this.root, selector); // Populate the selector with the node (popula o seletor com os nós)
+            }
+    
+            // Recursive method to add nodes to the selector (método recursivo para adicionar nós ao seletor)
+            populateNodeSelector(node, selector) {
+                if (!node) return; // Base case: non-existent node (caso base: nó inexistente)
+                const option = document.createElement("option"); // Create a new option in the selector (cria uma nova opção no seletor)
+                option.value = node.id; // Node id (id do nó)
+                option.textContent = `ID ${node.id} (${node.value})`; // Text in the node (texto do nó)
+                selector.appendChild(option); // Add the option to the selector (adiciona a opção ao seletor)
+                this.populateNodeSelector(node.left, selector); // Recursive call to the left child (chamada recursiva para o filho esquerdo)
+                this.populateNodeSelector(node.right, selector); // Recursive call to the right child (chamada recursiva para o filho direito)
+            }
+    
+            // Method to visualize the tree (método para visualizar a árvore)
+            renderTree(node = this.root, container = document.getElementById("tree"), level = 0) {
+                if (level === 0) container.innerHTML = ""; // Clear the tree before render (limpa a árvore antes de renderizar)
+                if (!node) return; // Base case: non-existent node (caso base: nó inexistente)
+    
+                // Create a new div for the tree level (cria uma nova div para o nível da árvore)
+                if (!container.querySelector(`.level-${level}`)) {
+                    const levelDiv = document.createElement("div");
+                    levelDiv.className = `level level-${level}`;
+                    container.appendChild(levelDiv);
+                }
+    
+                const levelContainer = container.querySelector(`.level-${level}`); // Select the level (seleciona o nível)
+    
+                const nodeElement = document.createElement("div"); // Create an element for the node (cria um elemento para o nó)
+                nodeElement.className = "node"; // Add style class (adiciona a classe de estilo)
+    
+                const span = document.createElement("span"); // Create a span to show the value and id of the node (cria uma span para exibir o valor e o id do nó)
+                span.textContent = `Node ${node.id} (${node.value})`; // Node text (texto do nó)
+                nodeElement.appendChild(span); // Add the span to the node (adiciona a span ao nó)
+    
+                levelContainer.appendChild(nodeElement); // Add the node to the tree level (adiciona o nó ao nível da árvore)
+    
+                // Recursive calls to both children (chamadas recursivas para os dois filhos)
+                this.renderTree(node.left, container, level + 1);
+                this.renderTree(node.right, container, level + 1);
+            }
+        }
+    
+        const tree = new BinaryTree(); // Instantiate the binary tree (instancia a árvore binária)
+    
+        // Function to insert a number into the tree from the input values (função para inserir um número na árvore a partir dos valores do input)
+        function insertNumber() {
+            const value = parseInt(document.getElementById("numberInput").value, 10);
+            const parentId = document.getElementById("nodeSelector").value;
+            const position = document.getElementById("positionSelector").value;
+    
+            // Check if the value is a valid number (verifica se o valor é um número válido)
+            if (!isNaN(value)) {
+                tree.insert(value, parentId, position); // Call the insert method of the tree (chama o método de inserção da árvore)
+            } else {
+                alert("Please enter a valid number."); // Show alert for invalid number (exibe alerta para número inválido)
+            }
+    
+            document.getElementById("numberInput").value = ""; // Clear the input field (limpa o campo de entrada)
+        }
+    
+        // Function to display the result of tree traversals (função para exibir o resultado das travessias da árvore)
+        function displayResults(title, result) {
+            const output = document.getElementById("traversalOutput");
+            output.innerHTML = `<h3>${title}</h3><p>${result.join(" -> ")}</p>`; // Display traversal results (exibe os resultados da travessia)
+        }
+    
+        // Preorder traversal function (visita a raiz antes dos filhos)
+        function preorderTraversal() {
+            const result = [];
+            function traverse(node) {
+                if (!node) return; // Base case (caso base)
+                result.push(`Node ${node.id} (${node.value})`); // Add the node to the result list (adiciona o nó à lista de resultados)
+                traverse(node.left); // Traverse the left child (chama a travessia no filho à esquerda)
+                traverse(node.right); // Traverse the right child (chama a travessia no filho à direita)
+            }
+            traverse(tree.root);
+            displayResults("Preorder Traversal", result); // Display the result (exibe o resultado)
+        }
+    
+        // Inorder traversal function (visita o filho à esquerda, raiz, e filho à direita)
+        function inorderTraversal() {
+            const result = [];
+            function traverse(node) {
+                if (!node) return; // Base case (caso base)
+                traverse(node.left); // Traverse the left child (chama a travessia no filho à esquerda)
+                result.push(`Node ${node.id} (${node.value})`); // Add the node to the result list (adiciona o nó à lista de resultados)
+                traverse(node.right); // Traverse the right child (chama a travessia no filho à direita)
+            }
+            traverse(tree.root);
+            displayResults("Inorder Traversal", result); // Display the result (exibe o resultado)
+        }
+    
+        // Postorder traversal function (visita os filhos antes da raiz)
+        function postorderTraversal() {
+            const result = [];
+            function traverse(node) {
+                if (!node) return; // Base case (caso base)
+                traverse(node.left); // Traverse the left child (chama a travessia no filho à esquerda)
+                traverse(node.right); // Traverse the right child (chama a travessia no filho à direita)
+                result.push(`Node ${node.id} (${node.value})`); // Add the node to the result list (adiciona o nó à lista de resultados)
+            }
+            traverse(tree.root);
+            displayResults("Postorder Traversal", result); // Display the result (exibe o resultado)
+        }
+    
+        // Level-order traversal function (visita os nós de cada nível, da esquerda para a direita)
+        function levelOrderTraversal() {
+            const result = [];
+            const queue = []; // Queue for level traversal (fila para a travessia em nível)
+            if (tree.root) queue.push(tree.root); // Add the root to the queue (adiciona a raiz à fila)
+    
+            while (queue.length > 0) {
+                const node = queue.shift(); // Remove the first node from the queue (remove o primeiro nó da fila)
+                result.push(`Node ${node.id} (${node.value})`); // Add the node to the result list (adiciona o nó à lista de resultados)
+                if (node.left) queue.push(node.left); // Add the left child to the queue (adiciona o filho à esquerda à fila)
+                if (node.right) queue.push(node.right); // Add the right child to the queue (adiciona o filho à direita à fila)
+            }
+    
+            displayResults("Level Order Traversal", result); // Display the result (exibe o resultado)
+        }
+    </script>
+    
+    
+</body>
+</html>

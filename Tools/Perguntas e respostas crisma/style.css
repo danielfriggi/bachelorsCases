@@ -46,7 +46,7 @@ li {
   transition: background-color 0.3s, transform 0.2s;
 }
 li:hover {
-  background-color: #e4e495;
+  background-color: #6b6767;
   transform: scale(1.03);
   cursor: pointer;
 }

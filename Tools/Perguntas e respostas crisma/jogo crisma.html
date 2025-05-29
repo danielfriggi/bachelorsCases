@@ -1,0 +1,3450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jogo de Perguntas</title>
+
+</head>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: rgb(31, 30, 30);
+  padding: 20px;
+  text-align: center;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: rgb(129, 126, 126);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background: beige;
+  border-radius: 10px;
+  border: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+  padding: 10px;
+  background: #4e4b4b;
+  border-radius: 4px;
+  color: beige;
+}
+
+</style>
+<body>
+  <div class="container">
+    <span>V.01</span>
+    <h1>Jogo de Perguntas - Crisma</h1>
+    <button id="startBtn">Iniciar Jogo</button>
+
+    <div id="difficultyButtons" class="hidden">
+      <button onclick="showQuestion('facil')">Fácil</button>
+      <button onclick="showQuestion('medio')">Médio</button>
+      <button onclick="showQuestion('dificil')">Difícil</button>
+    </div>
+
+    <div id="questionContainer" class="hidden">
+      <h2 id="questionText"></h2>
+      <ul id="answersList"></ul>
+    </div>
+
+
+</body>
+<script>
+const perguntas = {
+  facil: [
+  {
+    "pergunta": "O que o Batismo marca na vida de uma pessoa?",
+    "alternativas": [
+      "O fim da vida cristã",
+      "O início da vida cristã",
+      "Uma simples tradição familiar",
+      "A confirmação da fé adulta"
+    ],
+    "correta": "O início da vida cristã"
+  },
+  {
+    "pergunta": "Pelo Batismo, de que somos libertados?",
+    "alternativas": [
+      "Das obrigações sociais",
+      "Das doenças",
+      "Do pecado (original)",
+      "Do trabalho"
+    ],
+    "correta": "Do pecado (original)"
+  },
+  {
+    "pergunta": "Pelo Batismo, nos tornamos o quê?",
+    "alternativas": [
+      "Anjos",
+      "Filhos de Deus",
+      "Reis do mundo",
+      "Sacerdotes exclusivamente"
+    ],
+    "correta": "Filhos de Deus"
+  },
+  {
+    "pergunta": "Além da água, qual é outro elemento importante usado no rito do Batismo mencionado no texto?",
+    "alternativas": [
+      "Pão",
+      "Vinho",
+      "Óleo (do Crisma)",
+      "Incenso"
+    ],
+    "correta": "Óleo (do Crisma)"
+  },
+  {
+    "pergunta": "O que a unção com o óleo do Crisma significa?",
+    "alternativas": [
+      "Que a pessoa está doente",
+      "Que a pessoa recebeu uma herança",
+      "O dom do Espírito Santo e participação na missão de Cristo",
+      "Que a pessoa é muito rica"
+    ],
+    "correta": "O dom do Espírito Santo e participação na missão de Cristo"
+  },
+  {
+    "pergunta": "Segundo o texto, o Batismo nos torna membros de quê?",
+    "alternativas": [
+      "De um clube exclusivo",
+      "Da Igreja (Corpo de Cristo)",
+      "De um partido político",
+      "De uma equipe esportiva"
+    ],
+    "correta": "Da Igreja (Corpo de Cristo)"
+  },
+  {
+    "pergunta": "Qual evangelista relata a conversa de Jesus com Nicodemos sobre nascer da água e do Espírito?",
+    "alternativas": [
+      "Mateus",
+      "Marcos",
+      "Lucas",
+      "João"
+    ],
+    "correta": "João"
+  },
+  {
+    "pergunta": "Segundo o Catecismo, o Batismo é o fundamento de quê?",
+    "alternativas": [
+      "De uma carreira profissional",
+      "De toda a vida cristã",
+      "De uma vida de luxo",
+      "De uma dieta saudável"
+    ],
+    "correta": "De toda a vida cristã"
+  },
+  {
+    "pergunta": "Jesus foi ungido para fazer o quê, segundo o texto de Lucas citado?",
+    "alternativas": [
+      "Construir grandes edifícios",
+      "Anunciar a Boa Nova aos pobres",
+      "Ganhar batalhas militares",
+      "Escrever livros de história"
+    ],
+    "correta": "Anunciar a Boa Nova aos pobres"
+  },
+  {
+    "pergunta": "Como o texto sugere viver plenamente o Batismo?",
+    "alternativas": [
+      "Isolando-se do mundo",
+      "Participando da vida comunitária e dos sacramentos",
+      "Buscando apenas riquezas materiais",
+      "Ignorando os ensinamentos de Cristo"
+    ],
+    "correta": "Participando da vida comunitária e dos sacramentos"
+  },
+  {
+    "pergunta": "Quem foi a mãe de Jesus?",
+    "alternativas": ["Maria", "Isabel", "Marta", "Ana"],
+    "correta": "Maria"
+  },
+  {
+    "pergunta": "Qual é o primeiro livro da Bíblia?",
+    "alternativas": ["Gênesis", "Êxodo", "Levítico", "Números"],
+    "correta": "Gênesis"
+  },
+  {
+    "pergunta": "Quem construiu a arca para escapar do dilúvio?",
+    "alternativas": ["Noé", "Moisés", "Abraão", "Jacó"],
+    "correta": "Noé"
+  },
+  {
+    "pergunta": "Quem dividiu o Mar Vermelho?",
+    "alternativas": ["Moisés", "Josué", "Elias", "Samuel"],
+    "correta": "Moisés"
+  },
+  {
+    "pergunta": "Quantos apóstolos Jesus teve?",
+    "alternativas": ["Doze", "Dez", "Sete", "Quatorze"],
+    "correta": "Doze"
+  },
+  {
+    "pergunta": "Qual oração Jesus ensinou?",
+    "alternativas": ["Pai Nosso", "Ave Maria", "Credo", "Salve Rainha"],
+    "correta": "Pai Nosso"
+  },
+  {
+    "pergunta": "Qual é o nome da festa em que celebramos a ressurreição de Jesus?",
+    "alternativas": ["Páscoa", "Pentecostes", "Natal", "Corpus Christi"],
+    "correta": "Páscoa"
+  },
+  {
+    "pergunta": "Qual apóstolo traiu Jesus?",
+    "alternativas": ["Judas Iscariotes", "Pedro", "João", "Tomé"],
+    "correta": "Judas Iscariotes"
+  },
+  {
+    "pergunta": "Quem foi o pai de Jesus na Terra?",
+    "alternativas": ["José", "Zacarias", "Davi", "João Batista"],
+    "correta": "José"
+  },
+  {
+    "pergunta": "Onde Jesus nasceu?",
+    "alternativas": ["Belém", "Nazaré", "Jerusalém", "Egito"],
+    "correta": "Belém"
+  },
+{
+    "pergunta": "Qual é o último livro da Bíblia?",
+    "alternativas": ["Apocalipse", "Gênesis", "Salmos", "Levítico"],
+    "correta": "Apocalipse"
+  },
+  {
+    "pergunta": "Qual é o nome do livro que contém os Salmos?",
+    "alternativas": ["Livro dos Salmos", "Evangelho de João", "Provérbios", "Levítico"],
+    "correta": "Livro dos Salmos"
+  },
+  {
+    "pergunta": "Quem foi engolido por um grande peixe?",
+    "alternativas": ["Jonas", "Elias", "Paulo", "Moisés"],
+    "correta": "Jonas"
+  },
+  {
+    "pergunta": "Quem matou Golias com uma pedra?",
+    "alternativas": ["Davi", "Saul", "Jacó", "Abraão"],
+    "correta": "Davi"
+  },
+  {
+    "pergunta": "O que celebramos no Natal?",
+    "alternativas": ["O nascimento de Jesus", "A ressurreição de Jesus", "A descida do Espírito Santo", "A última ceia"],
+    "correta": "O nascimento de Jesus"
+  },
+  {
+    "pergunta": "Em que cidade Jesus cresceu?",
+    "alternativas": ["Nazaré", "Belém", "Jerusalém", "Cafarnaum"],
+    "correta": "Nazaré"
+  },
+  {
+    "pergunta": "Qual é o símbolo dos cristãos?",
+    "alternativas": ["Cruz", "Peixe", "Pomba", "Hóstia"],
+    "correta": "Cruz"
+  },
+  {
+    "pergunta": "O que é a Bíblia?",
+    "alternativas": ["Palavra de Deus", "Livro de regras", "Manual de oração", "História da Igreja"],
+    "correta": "Palavra de Deus"
+  },
+  {
+    "pergunta": "Quem criou o mundo segundo a Bíblia?",
+    "alternativas": ["Deus", "Jesus", "Moisés", "Adão"],
+    "correta": "Deus"
+  },
+  {
+    "pergunta": "Quem foi o primeiro homem?",
+    "alternativas": ["Adão", "Noé", "Abraão", "Elias"],
+    "correta": "Adão"
+  },
+{
+    "pergunta": "Quem foi a primeira mulher?",
+    "alternativas": ["Eva", "Sara", "Maria", "Ana"],
+    "correta": "Eva"
+  },
+  {
+    "pergunta": "Qual sacramento nos torna filhos de Deus?",
+    "alternativas": ["Batismo", "Crisma", "Eucaristia", "Confissão"],
+    "correta": "Batismo"
+  },
+  {
+    "pergunta": "Qual é a cor litúrgica do Natal?",
+    "alternativas": ["Branco", "Verde", "Roxo", "Vermelho"],
+    "correta": "Branco"
+  },
+  {
+    "pergunta": "Quem batizou Jesus?",
+    "alternativas": ["João Batista", "Pedro", "Paulo", "Zacarias"],
+    "correta": "João Batista"
+  },
+  {
+    "pergunta": "Qual foi o primeiro milagre de Jesus?",
+    "alternativas": ["Transformar água em vinho", "Curar um cego", "Andar sobre as águas", "Ressuscitar Lázaro"],
+    "correta": "Transformar água em vinho"
+  },
+  {
+    "pergunta": "Qual é o alimento consagrado na missa?",
+    "alternativas": ["Pão e vinho", "Água e azeite", "Uva e trigo", "Leite e mel"],
+    "correta": "Pão e vinho"
+  },
+  {
+    "pergunta": "Qual é o livro que narra a criação do mundo?",
+    "alternativas": ["Gênesis", "Êxodo", "Salmos", "Evangelho de João"],
+    "correta": "Gênesis"
+  },
+  {
+    "pergunta": "Quem escreveu muitos Salmos?",
+    "alternativas": ["Davi", "Salomão", "Moisés", "Isaías"],
+    "correta": "Davi"
+  },
+  {
+    "pergunta": "Quem era o irmão de Moisés?",
+    "alternativas": ["Arão", "Josué", "Abraão", "Elias"],
+    "correta": "Arão"
+  },
+  {
+    "pergunta": "Quantos dias Deus levou para criar o mundo?",
+    "alternativas": ["Seis dias, e descansou no sétimo", "Sete dias", "Três dias", "Quarenta dias"],
+    "correta": "Seis dias, e descansou no sétimo"
+  },
+{
+    "pergunta": "Quem subiu na árvore para ver Jesus?",
+    "alternativas": ["Zaqueu", "Pedro", "João", "Bartolomeu"],
+    "correta": "Zaqueu"
+  },
+  {
+    "pergunta": "Qual é o nome da oração que professamos nossa fé?",
+    "alternativas": ["Credo", "Pai Nosso", "Ave Maria", "Salve Rainha"],
+    "correta": "Credo"
+  },
+  {
+    "pergunta": "Quem é o chefe da Igreja Católica?",
+    "alternativas": ["O Papa", "O Bispo", "O Padre", "O Arcebispo"],
+    "correta": "O Papa"
+  },
+  {
+    "pergunta": "Onde o Papa mora?",
+    "alternativas": ["Vaticano", "Roma", "Jerusalém", "Assis"],
+    "correta": "Vaticano"
+  },
+  {
+    "pergunta": "Quem recebeu os 10 mandamentos?",
+    "alternativas": ["Moisés", "Abraão", "Elias", "Noé"],
+    "correta": "Moisés"
+  },
+  {
+    "pergunta": "Quem foi o apóstolo que andou sobre as águas com Jesus?",
+    "alternativas": ["Pedro", "João", "Tomé", "Tiago"],
+    "correta": "Pedro"
+  },
+  {
+    "pergunta": "Qual é a casa de oração dos cristãos?",
+    "alternativas": ["Igreja", "Templo", "Santuário", "Capela"],
+    "correta": "Igreja"
+  },
+  {
+    "pergunta": "Qual é o principal livro de oração dos católicos?",
+    "alternativas": ["Bíblia", "Catecismo", "Livro de Salmos", "Missal"],
+    "correta": "Bíblia"
+  },
+  {
+    "pergunta": "Quantos livros tem o Novo Testamento?",
+    "alternativas": ["27", "39", "12", "73"],
+    "correta": "27"
+  },
+  {
+    "pergunta": "Qual o nome da mãe de João Batista?",
+    "alternativas": ["Isabel", "Ana", "Sara", "Marta"],
+    "correta": "Isabel"
+  },
+{
+    "pergunta": "Quem negou Jesus três vezes?",
+    "alternativas": ["Pedro", "Tomé", "João", "Judas"],
+    "correta": "Pedro"
+  },
+  {
+    "pergunta": "Qual é a cor litúrgica da Quaresma?",
+    "alternativas": ["Roxo", "Branco", "Verde", "Vermelho"],
+    "correta": "Roxo"
+  },
+  {
+    "pergunta": "O que é a Eucaristia?",
+    "alternativas": ["Corpo e Sangue de Cristo", "Oração do dia", "Leitura da Bíblia", "Batismo"],
+    "correta": "Corpo e Sangue de Cristo"
+  },
+  {
+    "pergunta": "Qual é o nome do discípulo amado?",
+    "alternativas": ["João", "Pedro", "Tiago", "Mateus"],
+    "correta": "João"
+  },
+  {
+    "pergunta": "O que fazemos antes de comer para agradecer a Deus?",
+    "alternativas": ["Oração ou benção dos alimentos", "Leitura da Bíblia", "Sinal da cruz", "Canto litúrgico"],
+    "correta": "Oração ou benção dos alimentos"
+  },
+  {
+    "pergunta": "Qual o nome do animal que falou com Balaão?",
+    "alternativas": ["Jumenta", "Leão", "Cordeiro", "Cavalo"],
+    "correta": "Jumenta"
+  },
+  {
+    "pergunta": "Qual o nome do patriarca que quase sacrificou seu filho?",
+    "alternativas": ["Abraão", "Isaac", "Jacó", "Moisés"],
+    "correta": "Abraão"
+  },
+  {
+    "pergunta": "Quem sonhou com escada que ligava o céu e a terra?",
+    "alternativas": ["Jacó", "José", "Elias", "Salomão"],
+    "correta": "Jacó"
+  },
+  {
+    "pergunta": "Quem escreveu o Evangelho segundo Lucas?",
+    "alternativas": ["Lucas", "João", "Marcos", "Mateus"],
+    "correta": "Lucas"
+  },
+  {
+    "pergunta": "Qual é o mandamento mais importante?",
+    "alternativas": ["Amar a Deus sobre todas as coisas", "Não matarás", "Guardar os domingos", "Honrar pai e mãe"],
+    "correta": "Amar a Deus sobre todas as coisas"
+  },
+ {
+    "pergunta": "Qual é o nome do pai de João Batista?",
+    "alternativas": ["Zacarias", "José", "Abraão", "Simão"],
+    "correta": "Zacarias"
+  },
+  {
+    "pergunta": "Quem era o melhor amigo de Davi?",
+    "alternativas": ["Jônatas", "Saul", "Samuel", "Salomão"],
+    "correta": "Jônatas"
+  },
+  {
+    "pergunta": "Quem ajudou Jesus a carregar a cruz?",
+    "alternativas": ["Simão de Cirene", "Pedro", "João", "Barrabás"],
+    "correta": "Simão de Cirene"
+  },
+  {
+    "pergunta": "Qual era o trabalho de Pedro antes de seguir Jesus?",
+    "alternativas": ["Pescador", "Carpinteiro", "Pastor", "Cobrador de impostos"],
+    "correta": "Pescador"
+  },
+  {
+    "pergunta": "Quem subiu ao céu em um carro de fogo?",
+    "alternativas": ["Elias", "Moisés", "Abraão", "Isaías"],
+    "correta": "Elias"
+  },
+  {
+    "pergunta": "Quem é conhecido como o “pai da fé”?",
+    "alternativas": ["Abraão", "Isaac", "Moisés", "Davi"],
+    "correta": "Abraão"
+  },
+  {
+    "pergunta": "Quem foi a primeira pessoa criada por Deus?",
+    "alternativas": ["Adão", "Eva", "Noé", "Caim"],
+    "correta": "Adão"
+  },
+  {
+    "pergunta": "Quem era irmão de Abel?",
+    "alternativas": ["Caim", "Sete", "Adão", "Jacó"],
+    "correta": "Caim"
+  },
+  {
+    "pergunta": "Quem apareceu a Maria para anunciar que ela seria mãe de Jesus?",
+    "alternativas": ["Anjo Gabriel", "Anjo Miguel", "Anjo Rafael", "João Batista"],
+    "correta": "Anjo Gabriel"
+  },
+  {
+    "pergunta": "Qual apóstolo duvidou da ressurreição de Jesus?",
+    "alternativas": ["Tomé", "Pedro", "João", "Tiago"],
+    "correta": "Tomé"
+  },
+ {
+    "pergunta": "Em qual dia celebramos a Última Ceia?",
+    "alternativas": ["Quinta-feira Santa", "Domingo de Ramos", "Sexta-feira Santa", "Domingo de Páscoa"],
+    "correta": "Quinta-feira Santa"
+  },
+  {
+    "pergunta": "Qual o nome do discípulo que traiu Jesus com um beijo?",
+    "alternativas": ["Judas Iscariotes", "Pedro", "Tomé", "Mateus"],
+    "correta": "Judas Iscariotes"
+  },
+  {
+    "pergunta": "Qual o nome da festa que celebra a descida do Espírito Santo?",
+    "alternativas": ["Pentecostes", "Páscoa", "Natal", "Advento"],
+    "correta": "Pentecostes"
+  },
+  {
+    "pergunta": "Quantos livros tem a Bíblia Católica?",
+    "alternativas": ["73", "66", "70", "80"],
+    "correta": "73"
+  },
+  {
+    "pergunta": "Qual é o livro que narra o nascimento de Jesus?",
+    "alternativas": ["Evangelho de Lucas", "Evangelho de João", "Evangelho de Marcos", "Evangelho de Mateus"],
+    "correta": "Evangelho de Lucas"
+  },
+  {
+    "pergunta": "O que significa 'Amém'?",
+    "alternativas": ["Assim seja", "Aleluia", "Louvado seja Deus", "Pai nosso"],
+    "correta": "Assim seja"
+  },
+  {
+    "pergunta": "Em que parte da missa recebemos a comunhão?",
+    "alternativas": ["Liturgia Eucarística", "Rito Inicial", "Liturgia da Palavra", "Ato Penitencial"],
+    "correta": "Liturgia Eucarística"
+  },
+  {
+    "pergunta": "Qual é o dia do descanso e da oração para os cristãos?",
+    "alternativas": ["Domingo", "Sábado", "Sexta-feira", "Quarta-feira"],
+    "correta": "Domingo"
+  },
+  {
+    "pergunta": "Qual foi o castigo de Caim?",
+    "alternativas": ["Foi expulso e tornou-se errante", "Foi morto", "Ficou cego", "Foi exilado no Egito"],
+    "correta": "Foi expulso e tornou-se errante"
+  },
+  {
+    "pergunta": "Qual é a cor litúrgica da festa de Pentecostes?",
+    "alternativas": ["Vermelho", "Branco", "Roxo", "Verde"],
+    "correta": "Vermelho"
+  },
+ {
+    "pergunta": "Quem é considerado o padroeiro dos trabalhadores?",
+    "alternativas": ["São José", "Santo Antônio", "São Francisco de Assis", "São Paulo"],
+    "correta": "São José"
+  },
+  {
+    "pergunta": "Qual foi a primeira tentação de Jesus no deserto?",
+    "alternativas": ["Transformar pedras em pão", "Transformar água em vinho", "Pular do pináculo do templo", "Adorar Satanás"],
+    "correta": "Transformar pedras em pão"
+  },
+  {
+    "pergunta": "Qual apóstolo era cobrador de impostos?",
+    "alternativas": ["Mateus", "Pedro", "João", "Tomé"],
+    "correta": "Mateus"
+  },
+  {
+    "pergunta": "Quem escreveu o livro do Apocalipse?",
+    "alternativas": ["João", "Pedro", "Paulo", "Lucas"],
+    "correta": "João"
+  },
+  {
+    "pergunta": "Quem era o rei quando Jesus nasceu?",
+    "alternativas": ["Herodes", "Salomão", "Davi", "Ciro"],
+    "correta": "Herodes"
+  },
+  {
+    "pergunta": "Qual é o nome da mulher que ungiu os pés de Jesus?",
+    "alternativas": ["Maria Madalena", "Marta", "Maria, mãe de Jesus", "Joana"],
+    "correta": "Maria Madalena"
+  },
+  {
+    "pergunta": "Quantos dias durou o dilúvio?",
+    "alternativas": ["40 dias e 40 noites", "7 dias", "12 dias", "100 dias"],
+    "correta": "40 dias e 40 noites"
+  },
+  {
+    "pergunta": "Quem foram os pais de Jesus?",
+    "alternativas": ["Maria e José", "Ana e Joaquim", "Sara e Abraão", "Rebeca e Isaque"],
+    "correta": "Maria e José"
+  },
+  {
+    "pergunta": "Qual o animal usado por Jesus na entrada em Jerusalém?",
+    "alternativas": ["Jumentinho", "Cavalo", "Burro", "Camelo"],
+    "correta": "Jumentinho"
+  },
+  {
+    "pergunta": "O que os Reis Magos levaram para Jesus?",
+    "alternativas": ["Ouro, incenso e mirra", "Ouro, prata e bronze", "Incenso, mirra e vinho", "Prata, ouro e incenso"],
+    "correta": "Ouro, incenso e mirra"
+  },
+  {
+    "pergunta": "Quem disse “Eis o Cordeiro de Deus”?",
+    "alternativas": ["João Batista", "Pedro", "Paulo", "Tiago"],
+    "correta": "João Batista"
+  },
+  {
+    "pergunta": "Quem é a Mãe da Igreja?",
+    "alternativas": ["Maria", "Isabel", "Ana", "Marta"],
+    "correta": "Maria"
+  },
+  {
+    "pergunta": "Qual oração tem as palavras “santificado seja o Vosso nome”?",
+    "alternativas": ["Pai Nosso", "Ave Maria", "Credo", "Glória"],
+    "correta": "Pai Nosso"
+  },
+  {
+    "pergunta": "Quem foi chamado por Deus através da sarça ardente?",
+    "alternativas": ["Moisés", "Arão", "Josué", "Elias"],
+    "correta": "Moisés"
+  },
+  {
+    "pergunta": "Quem traiu Jesus por 30 moedas?",
+    "alternativas": ["Judas", "Pedro", "Tomé", "Caifás"],
+    "correta": "Judas"
+  },
+  {
+    "pergunta": "Qual é o símbolo da paz cristã?",
+    "alternativas": ["Pomba", "Cruz", "Peixe", "Cordeiro"],
+    "correta": "Pomba"
+  },
+  {
+    "pergunta": "Qual é o maior mandamento da Lei de Deus?",
+    "alternativas": ["Amar a Deus e ao próximo", "Não matarás", "Honra teu pai e tua mãe", "Não roubarás"],
+    "correta": "Amar a Deus e ao próximo"
+  },
+  {
+    "pergunta": "Qual é o nome do profeta que preparou o caminho para Jesus?",
+    "alternativas": ["João Batista", "Eliseu", "Isaías", "Elias"],
+    "correta": "João Batista"
+  },
+  {
+    "pergunta": "Quantas vezes devemos perdoar, segundo Jesus?",
+    "alternativas": ["Setenta vezes sete", "Três vezes", "Doze vezes", "Cem vezes"],
+    "correta": "Setenta vezes sete"
+  },
+  {
+    "pergunta": "Qual o primeiro milagre de Jesus?",
+    "alternativas": ["Transformar água em vinho", "Multiplicar pães", "Curar um cego", "Andar sobre as águas"],
+    "correta": "Transformar água em vinho"
+  },
+  {
+    "pergunta": "Quem foi escolhido para substituir Judas?",
+    "alternativas": ["Matias", "Barnabé", "Paulo", "Tiago"],
+    "correta": "Matias"
+  },
+  {
+    "pergunta": "Qual é o alimento do corpo e sangue de Cristo?",
+    "alternativas": ["Eucaristia", "Maná", "Pão e vinho", "Manna"],
+    "correta": "Eucaristia"
+  },
+  {
+    "pergunta": "Quem fundou a Igreja?",
+    "alternativas": ["Jesus Cristo", "Pedro", "Paulo", "João Batista"],
+    "correta": "Jesus Cristo"
+  },
+  {
+    "pergunta": "Quem é o sucessor de Pedro?",
+    "alternativas": ["O Papa", "O Bispo de Roma", "O Cardeal", "O Patriarca"],
+    "correta": "O Papa"
+  },
+  {
+    "pergunta": "Quantos são os Mandamentos da Lei de Deus?",
+    "alternativas": ["Dez", "Doze", "Sete", "Quatorze"],
+    "correta": "Dez"
+  },
+  {
+    "pergunta": "Quantas partes tem a missa?",
+    "alternativas": ["Duas (Liturgia da Palavra e Eucarística)", "Três", "Quatro", "Uma única"],
+    "correta": "Duas (Liturgia da Palavra e Eucarística)"
+  },
+  {
+    "pergunta": "Qual o nome do primeiro Papa?",
+    "alternativas": ["São Pedro", "São João", "São Tiago", "São Paulo"],
+    "correta": "São Pedro"
+  },
+  {
+    "pergunta": "Qual oração é repetida no Rosário?",
+    "alternativas": ["Ave Maria", "Pai Nosso", "Glória", "Credo"],
+    "correta": "Ave Maria"
+  },
+  {
+    "pergunta": "Qual o nome da festa que celebra a Eucaristia?",
+    "alternativas": ["Corpus Christi", "Pentecostes", "Páscoa", "Natal"],
+    "correta": "Corpus Christi"
+  },
+  {
+    "pergunta": "Qual é o tempo litúrgico que prepara o Natal?",
+    "alternativas": ["Advento", "Quaresma", "Tempo Pascal", "Pentecostes"],
+    "correta": "Advento"
+  },
+  {
+    "pergunta": "Quem subiu ao céu de corpo e alma?",
+    "alternativas": ["Maria", "Jesus", "Elias", "Moisés"],
+    "correta": "Maria"
+  },
+  {
+    "pergunta": "Qual é o tempo litúrgico que dura 40 dias antes da Páscoa?",
+    "alternativas": ["Quaresma", "Advento", "Tempo Pascal", "Pentecostes"],
+    "correta": "Quaresma"
+  },
+  {
+    "pergunta": "Quem negou Jesus três vezes?",
+    "alternativas": ["Pedro", "Judas", "Tomé", "João"],
+    "correta": "Pedro"
+  },
+  {
+    "pergunta": "Qual o nome do Papa atual?",
+    "alternativas": ["Francisco", "Bento XVI", "João Paulo II", "Leão XIII"],
+    "correta": "Francisco"
+  },
+  {
+    "pergunta": "Qual livro da Bíblia conta a história da criação?",
+    "alternativas": ["Gênesis", "Êxodo", "Salmos", "Apocalipse"],
+    "correta": "Gênesis"
+  },
+  {
+    "pergunta": "Quem interpretou os sonhos do Faraó?",
+    "alternativas": ["José do Egito", "Moisés", "Daniel", "Elias"],
+    "correta": "José do Egito"
+  },
+  {
+    "pergunta": "Qual santo é conhecido por pregar aos peixes?",
+    "alternativas": ["Santo Antônio", "São Francisco", "São Pedro", "São João"],
+    "correta": "Santo Antônio"
+  },
+  {
+    "pergunta": "Quem escreveu os Salmos?",
+    "alternativas": ["Davi", "Salomão", "Moisés", "Isaías"],
+    "correta": "Davi"
+  },
+  {
+    "pergunta": "Qual é a oração ensinada por Maria em Fátima?",
+    "alternativas": ["Oração do Rosário", "Pai Nosso", "Ave Maria", "Credo"],
+    "correta": "Oração do Rosário"
+  },
+  {
+    "pergunta": "Qual é o símbolo do cristão na Quaresma?",
+    "alternativas": ["Cruz", "Pomba", "Peixe", "Cordeiro"],
+    "correta": "Cruz"
+  },
+  {
+    "pergunta": "Quem foi o primeiro rei de Israel?",
+    "alternativas": ["Saul", "Davi", "Salomão", "Elias"],
+    "correta": "Saul"
+  },
+  {
+    "pergunta": "Qual é o sinal do cristão?",
+    "alternativas": ["Sinal da cruz", "Beijo da paz", "Ave Maria", "Glória"],
+    "correta": "Sinal da cruz"
+  },
+  {
+    "pergunta": "Quem andou com Jesus sobre as águas?",
+    "alternativas": ["Pedro", "João", "Tiago", "André"],
+    "correta": "Pedro"
+  },
+  {
+    "pergunta": "Quem viu Jesus na estrada de Damasco?",
+    "alternativas": ["Saulo/Paulo", "Pedro", "João", "Tiago"],
+    "correta": "Saulo/Paulo"
+  },
+  {
+    "pergunta": "O que significa “Igreja”?",
+    "alternativas": ["Assembleia dos fiéis", "Templo", "Comunidade local", "Edifício religioso"],
+    "correta": "Assembleia dos fiéis"
+  },
+  {
+    "pergunta": "Qual é o nome do pão consagrado na missa?",
+    "alternativas": ["Hóstia", "Pão ázimo", "Maná", "Pão comum"],
+    "correta": "Hóstia"
+  },
+  {
+    "pergunta": "Qual é o gesto que o padre faz na bênção final da missa?",
+    "alternativas": ["Sinal da cruz", "Genuflexão", "Ajoelhar", "Batismo"],
+    "correta": "Sinal da cruz"
+  },
+  {
+    "pergunta": "O que significa a palavra “discípulo”?",
+    "alternativas": ["Aprendiz, seguidor", "Professor", "Líder", "Sacerdote"],
+    "correta": "Aprendiz, seguidor"
+  },
+  {
+    "pergunta": "Quem é o protetor dos jovens?",
+    "alternativas": ["São João Bosco", "São Francisco de Assis", "São José", "São Pedro"],
+    "correta": "São João Bosco"
+  },
+  {
+    "pergunta": "Qual é o nome da cruz com Jesus crucificado?",
+    "alternativas": ["Crucifixo", "Cruz vazia", "Cruz celta", "Cruz de Malta"],
+    "correta": "Crucifixo"
+  },
+  {
+    "pergunta": "Qual é o nome da oração à Mãe de Jesus?",
+    "alternativas": ["Ave Maria", "Salve Rainha", "Oração de São Francisco", "Pai Nosso"],
+    "correta": "Ave Maria"
+  },
+  {
+    "pergunta": "Quem foi o santo que fundou os Franciscanos?",
+    "alternativas": ["São Francisco de Assis", "São Domingos", "São Bento", "São Patrício"],
+    "correta": "São Francisco de Assis"
+  },
+  {
+    "pergunta": "Qual é o evangelho mais curto?",
+    "alternativas": ["Marcos", "Mateus", "Lucas", "João"],
+    "correta": "Marcos"
+  },
+  {
+    "pergunta": "Quem escreveu as Cartas aos Coríntios?",
+    "alternativas": ["São Paulo", "São Pedro", "São João", "São Tiago"],
+    "correta": "São Paulo"
+  },
+  {
+    "pergunta": "Qual é o nome da oração feita ao meio-dia com o sino?",
+    "alternativas": ["Ângelus", "Terço", "Vésperas", "Laudes"],
+    "correta": "Ângelus"
+  },
+  {
+    "pergunta": "Quem são os três arcanjos citados na Bíblia?",
+    "alternativas": ["Miguel, Rafael e Gabriel", "Miguel, Uriel e Gabriel", "Rafael, Gabriel e Azrael", "Miguel, Gabriel e Samael"],
+    "correta": "Miguel, Rafael e Gabriel"
+  },
+  {
+    "pergunta": "Quem viu Jesus transfigurado?",
+    "alternativas": ["Pedro, Tiago e João", "Pedro, Paulo e Tiago", "Tiago, João e André", "Pedro, João e Judas"],
+    "correta": "Pedro, Tiago e João"
+  },
+  {
+    "pergunta": "Qual é o nome do lugar onde Jesus rezou antes de ser preso?",
+    "alternativas": ["Getsêmani", "Betânia", "Jerusalém", "Nazareth"],
+    "correta": "Getsêmani"
+  },
+  {
+    "pergunta": "O que o anjo disse a Maria?",
+    "alternativas": ["Ave, cheia de graça", "Salve, rainha dos céus", "Glória a Deus no céu", "Paz esteja convosco"],
+    "correta": "Ave, cheia de graça"
+  },
+  {
+    "pergunta": "Quem é chamado de “o bom pastor”?",
+    "alternativas": ["Jesus", "Moisés", "David", "Pedro"],
+    "correta": "Jesus"
+  },
+  {
+    "pergunta": "Quem lavou as mãos ao condenar Jesus?",
+    "alternativas": ["Pilatos", "Herodes", "Caifás", "Pedro"],
+    "correta": "Pilatos"
+  },
+  {
+    "pergunta": "Qual a profissão de José, pai de Jesus?",
+    "alternativas": ["Carpinteiro", "Pescador", "Ferreiro", "Pastor"],
+    "correta": "Carpinteiro"
+  },
+  {
+    "pergunta": "Quem são os evangelistas?",
+    "alternativas": ["Mateus, Marcos, Lucas e João", "Pedro, Paulo, Tiago e João", "Moisés, Elias, Eliseu e Isaías", "Lucas, Paulo, Pedro e Tiago"],
+    "correta": "Mateus, Marcos, Lucas e João"
+  },
+  {
+    "pergunta": "O que significa “crisma”?",
+    "alternativas": ["Unção com óleo santo", "Batismo", "Confissão", "Comunhão"],
+    "correta": "Unção com óleo santo"
+  },
+  {
+    "pergunta": "Qual é o tempo litúrgico mais importante do ano?",
+    "alternativas": ["Tempo Pascal", "Advento", "Quaresma", "Natal"],
+    "correta": "Tempo Pascal"
+  },
+  {
+    "pergunta": "O que significa a palavra “catequese”?",
+    "alternativas": ["Ensino da fé", "Confissão", "Oração comunitária", "Sacramento"],
+    "correta": "Ensino da fé"
+  },
+{
+  "pergunta": "O que o padre diz ao consagrar o pão?",
+  "alternativas": [
+    "Isto é o meu corpo…",
+    "Recebei o Espírito Santo",
+    "O Senhor esteja convosco",
+    "Glória a Deus nas alturas"
+  ],
+  "correta": "Isto é o meu corpo…"
+},
+{
+  "pergunta": "Quem é conhecido como o “apóstolo das nações”?",
+  "alternativas": [
+    "Paulo",
+    "Pedro",
+    "João",
+    "Tiago"
+  ],
+  "correta": "Paulo"
+},
+{
+  "pergunta": "O que se celebra no Domingo de Ramos?",
+  "alternativas": [
+    "Entrada triunfal de Jesus em Jerusalém",
+    "A ressurreição de Jesus",
+    "O nascimento de Jesus",
+    "A ascensão de Jesus"
+  ],
+  "correta": "Entrada triunfal de Jesus em Jerusalém"
+},
+{
+  "pergunta": "Quem foi o apóstolo que era irmão de João?",
+  "alternativas": [
+    "Tiago",
+    "Pedro",
+    "André",
+    "Mateus"
+  ],
+  "correta": "Tiago"
+},
+{
+  "pergunta": "Qual foi o discípulo que Jesus amava?",
+  "alternativas": [
+    "João",
+    "Pedro",
+    "Judas",
+    "Tomé"
+  ],
+  "correta": "João"
+},
+{
+  "pergunta": "O que significa “evangelho”?",
+  "alternativas": [
+    "Boa nova",
+    "Profecia",
+    "Mensagem de amor",
+    "Livro sagrado"
+  ],
+  "correta": "Boa nova"
+},
+{
+  "pergunta": "Qual é o nome da casa de Deus?",
+  "alternativas": [
+    "Igreja ou templo",
+    "Sinagoga",
+    "Capela",
+    "Mosteiro"
+  ],
+  "correta": "Igreja ou templo"
+},
+{
+  "pergunta": "Quem cuidou de Jesus e Maria?",
+  "alternativas": [
+    "São José",
+    "Pedro",
+    "João Batista",
+    "Paulo"
+  ],
+  "correta": "São José"
+},
+{
+  "pergunta": "O que é o altar?",
+  "alternativas": [
+    "Mesa da celebração da missa",
+    "Banco da igreja",
+    "Púlpito",
+    "Lugar para as velas"
+  ],
+  "correta": "Mesa da celebração da missa"
+},
+{
+  "pergunta": "O que representa a vela no batismo?",
+  "alternativas": [
+    "A luz de Cristo",
+    "A presença do Espírito Santo",
+    "A purificação dos pecados",
+    "A fé dos pais"
+  ],
+  "correta": "A luz de Cristo"
+},
+{
+  "pergunta": "Qual é a missão de todo cristão?",
+  "alternativas": [
+    "Amar e servir a Deus e ao próximo",
+    "Guardar segredos da igreja",
+    "Frequentar a missa todos os dias",
+    "Estudar os evangelhos"
+  ],
+  "correta": "Amar e servir a Deus e ao próximo"
+},
+{
+  "pergunta": "O que usamos para rezar o terço?",
+  "alternativas": [
+    "Rosário",
+    "Bíblia",
+    "Círio pascal",
+    "Velas"
+  ],
+  "correta": "Rosário"
+},
+{
+  "pergunta": "Qual oração começa com “Creio em Deus Pai…”?",
+  "alternativas": [
+    "Credo",
+    "Pai Nosso",
+    "Ave Maria",
+    "Glória"
+  ],
+  "correta": "Credo"
+},
+{
+  "pergunta": "Qual é o dia da semana em que Jesus ressuscitou?",
+  "alternativas": [
+    "Domingo",
+    "Sábado",
+    "Sexta-feira",
+    "Segunda-feira"
+  ],
+  "correta": "Domingo"
+}
+]
+,
+  medio: [
+    {
+    "pergunta": "Segundo o Catecismo (CIC §1213), o Batismo é o pórtico para o quê?",
+    "alternativas": [
+      "A vida política",
+      "A vida no Espírito",
+      "A aposentadoria",
+      "As viagens internacionais"
+    ],
+    "correta": "A vida no Espírito"
+  },
+  {
+    "pergunta": "Qual é a missão confiada pelo Batismo, conforme o texto?",
+    "alternativas": [
+      "Ser apenas espectador da fé",
+      "Viver como Cristo viveu, amar como Ele amou e anunciar sua Boa Nova",
+      "Acumular o máximo de conhecimento possível",
+      "Dominar outras religiões"
+    ],
+    "correta": "Viver como Cristo viveu, amar como Ele amou e anunciar sua Boa Nova"
+  },
+  {
+    "pergunta": "O texto cita que o batizado é ungido para participar de qual missão?",
+    "alternativas": [
+      "A missão dos apóstolos apenas",
+      "A missão de um líder comunitário específico",
+      "A missão de Cristo",
+      "A missão de construir templos"
+    ],
+    "correta": "A missão de Cristo"
+  },
+  {
+    "pergunta": "O que significa ser incorporado ao Corpo de Cristo pelo Batismo?",
+    "alternativas": [
+      "Tornar-se uma estátua",
+      "Tornar-se membro da Igreja",
+      "Receber superpoderes físicos",
+      "Ser transformado em anjo"
+    ],
+    "correta": "Tornar-se membro da Igreja"
+  },
+  {
+    "pergunta": "Segundo o texto, ser ungido no Batismo significa receber uma...",
+    "alternativas": [
+      "Identidade nova e ser consagrado para uma missão divina",
+      "Quantia em dinheiro",
+      "Promoção no trabalho",
+      "Garantia de vida fácil"
+    ],
+    "correta": "Identidade nova e ser consagrado para uma missão divina"
+  },
+  {
+    "pergunta": "Qual texto bíblico é citado como base para o mandato missionário ligado ao Batismo?",
+    "alternativas": [
+      "João 3, 1-6",
+      "Lucas 4, 16-19",
+      "Mateus 28,19 ('Ide, pois, e fazei discípulos...')",
+      "Isaías 61,1"
+    ],
+    "correta": "Mateus 28,19 ('Ide, pois, e fazei discípulos...')"
+  },
+  {
+    "pergunta": "O que o Espírito Santo fez em Jesus no Batismo, segundo o texto?",
+    "alternativas": [
+      "O abandonou",
+      "O tornou invisível",
+      "Desceu sobre Ele, confirmando-O como o Ungido do Pai",
+      "Deu-Lhe riquezas infinitas"
+    ],
+    "correta": "Desceu sobre Ele, confirmando-O como o Ungido do Pai"
+  },
+  {
+    "pergunta": "O batizado, ungido pelo Espírito Santo, é chamado a uma vida...",
+    "alternativas": [
+      "De luxo e ostentação",
+      "Santa e comprometida com a edificação do Reino de Deus",
+      "Isolada em um mosteiro obrigatoriamente",
+      "Sem regras ou compromissos"
+    ],
+    "correta": "Santa e comprometida com a edificação do Reino de Deus"
+  },
+  {
+    "pergunta": "Segundo o texto, viver plenamente o Batismo implica em:",
+    "alternativas": [
+      "Ignorar os necessitados",
+      "Exercer a caridade e a justiça no cotidiano",
+      "Criticar constantemente os outros",
+      "Buscando apenas o próprio bem-estar"
+    ],
+    "correta": "Exercer a caridade e a justiça no cotidiano"
+  },
+  {
+    "pergunta": "O texto afirma que o batizado é chamado a ser:",
+    "alternativas": [
+      "Invisível e discreto",
+      "Sinal visível da presença de Cristo no mundo",
+      "Sempre o centro das atenções",
+      "Neutro em relação às questões sociais"
+    ],
+    "correta": "Sinal visível da presença de Cristo no mundo"
+  },
+  {
+    "pergunta": "Qual o nome da montanha onde Moisés recebeu os Dez Mandamentos?",
+    "alternativas": ["Monte Sinai", "Monte Carmelo", "Monte Tabor", "Monte das Oliveiras"],
+    "correta": "Monte Sinai"
+  },
+  {
+    "pergunta": "Quem foi o apóstolo que negou Jesus três vezes?",
+    "alternativas": ["Pedro", "João", "Tiago", "Tomé"],
+    "correta": "Pedro"
+  },
+  {
+    "pergunta": "Quantos evangelhos há no Novo Testamento?",
+    "alternativas": ["Quatro", "Três", "Cinco", "Dois"],
+    "correta": "Quatro"
+  },
+  {
+    "pergunta": "O que significa a palavra 'Eucaristia'?",
+    "alternativas": ["Ação de graças", "Sacrifício", "Comunhão", "Benção"],
+    "correta": "Ação de graças"
+  },
+  {
+    "pergunta": "Qual é o símbolo mais comum do Espírito Santo?",
+    "alternativas": ["Pomba", "Fogo", "Água", "Vento"],
+    "correta": "Pomba"
+  },
+  {
+    "pergunta": "Quem foi o primeiro mártir cristão?",
+    "alternativas": ["Estevão", "Tiago", "Paulo", "Pedro"],
+    "correta": "Estevão"
+  },
+  {
+    "pergunta": "Quantos dias Jesus permaneceu morto antes de ressuscitar?",
+    "alternativas": ["Três", "Dois", "Quatro", "Sete"],
+    "correta": "Três"
+  },
+  {
+    "pergunta": "O que aconteceu no Pentecostes?",
+    "alternativas": ["Descida do Espírito Santo", "Nascimento de Jesus", "Ressurreição de Jesus", "Batismo de Jesus"],
+    "correta": "Descida do Espírito Santo"
+  },
+  {
+    "pergunta": "Quem escreveu a maioria das cartas do Novo Testamento?",
+    "alternativas": ["Paulo", "Pedro", "João", "Tiago"],
+    "correta": "Paulo"
+  },
+  {
+    "pergunta": "Quantos sacramentos existem na Igreja Católica?",
+    "alternativas": ["Sete", "Cinco", "Nove", "Doze"],
+    "correta": "Sete"
+  },
+  {
+    "pergunta": "O que é o Credo?",
+    "alternativas": ["Profissão de fé", "Oração de penitência", "Hino de louvor", "Sacramento"],
+    "correta": "Profissão de fé"
+  },
+  {
+    "pergunta": "Em qual sacramento somos ungidos com óleo?",
+    "alternativas": ["Crisma", "Batismo", "Eucaristia", "Confirmação"],
+    "correta": "Crisma"
+  },
+  {
+    "pergunta": "Quem foi o primeiro Papa?",
+    "alternativas": ["Pedro", "Paulo", "João", "Tiago"],
+    "correta": "Pedro"
+  },
+  {
+    "pergunta": "O que significa 'Bíblia'?",
+    "alternativas": ["Livros", "Palavras", "Histórias", "Escrituras"],
+    "correta": "Livros"
+  },
+  {
+    "pergunta": "O que significa a cor roxa na liturgia?",
+    "alternativas": ["Penitência", "Alegria", "Pureza", "Esperança"],
+    "correta": "Penitência"
+  },
+  {
+    "pergunta": "Qual é o nome do período de preparação para a Páscoa?",
+    "alternativas": ["Quaresma", "Advento", "Pentecostes", "Natal"],
+    "correta": "Quaresma"
+  },
+  {
+    "pergunta": "Qual o nome do discípulo que era médico?",
+    "alternativas": ["Lucas", "Mateus", "João", "Paulo"],
+    "correta": "Lucas"
+  },
+  {
+    "pergunta": "O que é a Tradição na fé católica?",
+    "alternativas": ["Ensinamentos passados oralmente pelos apóstolos", "Livros sagrados", "Regras da igreja", "Mandamentos"],
+    "correta": "Ensinamentos passados oralmente pelos apóstolos"
+  },
+  {
+    "pergunta": "Quem desafiou os profetas de Baal?",
+    "alternativas": ["Elias", "Eliseu", "Samuel", "Moisés"],
+    "correta": "Elias"
+  },
+  {
+    "pergunta": "Quem escreveu Atos dos Apóstolos?",
+    "alternativas": ["Lucas", "Paulo", "Pedro", "João"],
+    "correta": "Lucas"
+  },
+  {
+    "pergunta": "Qual evangelho não é sinótico?",
+    "alternativas": ["João", "Mateus", "Marcos", "Lucas"],
+    "correta": "João"
+  },
+  {
+    "pergunta": "Quem substituiu Moisés?",
+    "alternativas": ["Josué", "Calebe", "Elias", "Samuel"],
+    "correta": "Josué"
+  },
+  {
+    "pergunta": "Quem viu Jesus ressuscitado primeiro?",
+    "alternativas": ["Maria Madalena", "Pedro", "João", "Tomé"],
+    "correta": "Maria Madalena"
+  },
+  {
+    "pergunta": "O que é o Tabernáculo?",
+    "alternativas": ["Onde se guarda a Eucaristia", "Lugar de oração", "Templo de Jerusalém", "Altar da missa"],
+    "correta": "Onde se guarda a Eucaristia"
+  },
+  {
+    "pergunta": "Qual a principal oração mariana?",
+    "alternativas": ["Ave Maria", "Salve Rainha", "Pai Nosso", "Glória"],
+    "correta": "Ave Maria"
+  },
+  {
+    "pergunta": "O que significa 'Emmanuel'?",
+    "alternativas": ["Deus conosco", "Filho de Deus", "Salvador", "Rei dos reis"],
+    "correta": "Deus conosco"
+  },
+  {
+    "pergunta": "Qual profeta foi levado ao céu em carro de fogo?",
+    "alternativas": ["Elias", "Eliseu", "Moisés", "Samuel"],
+    "correta": "Elias"
+  },
+  {
+    "pergunta": "Qual livro da Bíblia dá conselhos de sabedoria?",
+    "alternativas": ["Provérbios", "Salmos", "Eclesiastes", "Isaías"],
+    "correta": "Provérbios"
+  },
+  {
+    "pergunta": "O que é Liturgia da Palavra?",
+    "alternativas": ["Parte da missa com leituras bíblicas", "Parte da missa com oração", "Momento de comunhão", "Oração final"],
+    "correta": "Parte da missa com leituras bíblicas"
+  },
+  {
+    "pergunta": "Qual a oração que resume a fé cristã?",
+    "alternativas": ["Credo", "Pai Nosso", "Ave Maria", "Glória"],
+    "correta": "Credo"
+  },
+  {
+    "pergunta": "Onde Jesus foi crucificado?",
+    "alternativas": ["Gólgota", "Monte Sinai", "Getsemani", "Betânia"],
+    "correta": "Gólgota"
+  },
+  {
+    "pergunta": "O que significa 'Messias'?",
+    "alternativas": ["Ungido", "Salvador", "Rei", "Profeta"],
+    "correta": "Ungido"
+  },
+  {
+    "pergunta": "Quem anunciou o nascimento de João Batista?",
+    "alternativas": ["Anjo Gabriel", "Anjo Miguel", "Anjo Rafael", "São José"],
+    "correta": "Anjo Gabriel"
+  },
+ {
+    "pergunta": "Qual é o maior mandamento?",
+    "alternativas": [
+      "Amar a Deus sobre todas as coisas",
+      "Fazer boas obras",
+      "Guardar o sábado",
+      "Amar o próximo como a si mesmo"
+    ],
+    "correta": "Amar a Deus sobre todas as coisas"
+  },
+  {
+    "pergunta": "Quem escreveu as Lamentações?",
+    "alternativas": [
+      "Jeremias",
+      "Isaías",
+      "Ezequiel",
+      "Daniel"
+    ],
+    "correta": "Jeremias"
+  },
+  {
+    "pergunta": "Qual livro fala do amor entre os esposos?",
+    "alternativas": [
+      "Cântico dos Cânticos",
+      "Provérbios",
+      "Eclesiastes",
+      "Salmos"
+    ],
+    "correta": "Cântico dos Cânticos"
+  },
+  {
+    "pergunta": "O que é o Santo Rosário?",
+    "alternativas": [
+      "Conjunto de orações marianas",
+      "Um livro da Bíblia",
+      "Uma celebração da Igreja",
+      "Um sacramento"
+    ],
+    "correta": "Conjunto de orações marianas"
+  },
+  {
+    "pergunta": "O que celebramos no Natal?",
+    "alternativas": [
+      "Nascimento de Jesus",
+      "Ressurreição de Jesus",
+      "Pentecostes",
+      "Batismo de Jesus"
+    ],
+    "correta": "Nascimento de Jesus"
+  },
+  {
+    "pergunta": "Qual sacramento fortalece a fé?",
+    "alternativas": [
+      "Crisma",
+      "Batismo",
+      "Eucaristia",
+      "Confissão"
+    ],
+    "correta": "Crisma"
+  },
+  {
+    "pergunta": "Qual profeta foi jogado na cova dos leões?",
+    "alternativas": [
+      "Daniel",
+      "Elias",
+      "Jonas",
+      "Isaías"
+    ],
+    "correta": "Daniel"
+  },
+  {
+    "pergunta": "Quando celebramos Todos os Santos?",
+    "alternativas": [
+      "1º de novembro",
+      "31 de outubro",
+      "2 de novembro",
+      "15 de agosto"
+    ],
+    "correta": "1º de novembro"
+  },
+  {
+    "pergunta": "Qual rei sonhou com estátua de ouro e ferro?",
+    "alternativas": [
+      "Nabucodonosor",
+      "Davi",
+      "Salomão",
+      "Acabe"
+    ],
+    "correta": "Nabucodonosor"
+  },
+  {
+    "pergunta": "Quem batizou o eunuco etíope?",
+    "alternativas": [
+      "Filipe",
+      "Pedro",
+      "Paulo",
+      "João Batista"
+    ],
+    "correta": "Filipe"
+  },
+  {
+    "pergunta": "Qual era o nome romano de Paulo?",
+    "alternativas": [
+      "Saulo",
+      "Simão",
+      "Barnabé",
+      "Tiago"
+    ],
+    "correta": "Saulo"
+  },
+  {
+    "pergunta": "O que significa o sinal da cruz?",
+    "alternativas": [
+      "Profissão da fé trinitária",
+      "Uma oração",
+      "Um pedido de proteção",
+      "Um gesto de paz"
+    ],
+    "correta": "Profissão da fé trinitária"
+  },
+  {
+    "pergunta": "Quem escreveu o Apocalipse?",
+    "alternativas": [
+      "João",
+      "Pedro",
+      "Paulo",
+      "Lucas"
+    ],
+    "correta": "João"
+  },
+  {
+    "pergunta": "O que é a Inquirição Pascal?",
+    "alternativas": [
+      "Perguntas da missa da Vigília Pascal",
+      "Um julgamento da Igreja",
+      "Um jejum especial",
+      "Uma oração de penitência"
+    ],
+    "correta": "Perguntas da missa da Vigília Pascal"
+  },
+  {
+    "pergunta": "O que é a Consagração na missa?",
+    "alternativas": [
+      "Transformação do pão e vinho",
+      "Momento da homilia",
+      "A benção final",
+      "A comunhão"
+    ],
+    "correta": "Transformação do pão e vinho"
+  },
+  {
+    "pergunta": "Quem viu a escada que subia ao céu?",
+    "alternativas": [
+      "Jacó",
+      "José",
+      "Abraão",
+      "Isaque"
+    ],
+    "correta": "Jacó"
+  },
+  {
+    "pergunta": "Quem foi escolhido para ajudar Jesus com a cruz?",
+    "alternativas": [
+      "Simão Cireneu",
+      "Pedro",
+      "João",
+      "Judas"
+    ],
+    "correta": "Simão Cireneu"
+  },
+  {
+    "pergunta": "Qual livro da Bíblia fala sobre a criação do mundo?",
+    "alternativas": [
+      "Gênesis",
+      "Êxodo",
+      "Levítico",
+      "Números"
+    ],
+    "correta": "Gênesis"
+  },
+  {
+    "pergunta": "O que significa “Pentateuco”?",
+    "alternativas": [
+      "Os cinco primeiros livros da Bíblia",
+      "Cinco profetas maiores",
+      "Cinco evangelhos",
+      "Cinco cartas de Paulo"
+    ],
+    "correta": "Os cinco primeiros livros da Bíblia"
+  },
+  {
+    "pergunta": "Quem foi o sucessor de Moisés na liderança do povo de Israel?",
+    "alternativas": [
+      "Josué",
+      "Calebe",
+      "Elias",
+      "Samuel"
+    ],
+    "correta": "Josué"
+  },
+  {
+    "pergunta": "Quantas cartas foram escritas por São Paulo?",
+    "alternativas": [
+      "13 cartas",
+      "7 cartas",
+      "21 cartas",
+      "4 cartas"
+    ],
+    "correta": "13 cartas"
+  },
+  {
+    "pergunta": "Em que língua foi escrito o Novo Testamento originalmente?",
+    "alternativas": [
+      "Grego",
+      "Latim",
+      "Hebraico",
+      "Aramaico"
+    ],
+    "correta": "Grego"
+  },
+  {
+    "pergunta": "Quem traduziu a Bíblia para o latim (Vulgata)?",
+    "alternativas": [
+      "São Jerônimo",
+      "Santo Agostinho",
+      "São Tomás de Aquino",
+      "São Gregório"
+    ],
+    "correta": "São Jerônimo"
+  },
+  {
+    "pergunta": "Quem foi o primeiro mártir cristão?",
+    "alternativas": [
+      "Santo Estêvão",
+      "São Pedro",
+      "São Paulo",
+      "São João"
+    ],
+    "correta": "Santo Estêvão"
+  },
+  {
+    "pergunta": "Quantos Salmos existem na Bíblia?",
+    "alternativas": [
+      "150",
+      "100",
+      "200",
+      "120"
+    ],
+    "correta": "150"
+  },
+  {
+    "pergunta": "Qual o significado da palavra “Messias”?",
+    "alternativas": [
+      "Ungido",
+      "Salvador",
+      "Rei",
+      "Profeta"
+    ],
+    "correta": "Ungido"
+  },
+  {
+    "pergunta": "Quem foi o profeta que confrontou o rei Acabe e a rainha Jezabel?",
+    "alternativas": [
+      "Elias",
+      "Eliseu",
+      "Isaías",
+      "Jeremias"
+    ],
+    "correta": "Elias"
+  },
+  {
+    "pergunta": "Em que cidade Jesus nasceu?",
+    "alternativas": [
+      "Belém",
+      "Nazareth",
+      "Jerusalém",
+      "Cafarnaum"
+    ],
+    "correta": "Belém"
+  },
+  {
+    "pergunta": "Quem foi o imperador romano na época do nascimento de Jesus?",
+    "alternativas": [
+      "César Augusto",
+      "Nero",
+      "Tibério",
+      "Calígula"
+    ],
+    "correta": "César Augusto"
+  },
+  {
+    "pergunta": "Qual era o nome do homem rico que ofereceu o túmulo para Jesus?",
+    "alternativas": [
+      "José de Arimateia",
+      "Nicodemos",
+      "Simão Cireneu",
+      "Zaqueu"
+    ],
+    "correta": "José de Arimateia"
+  },
+  {
+    "pergunta": "Quem escreveu os Atos dos Apóstolos?",
+    "alternativas": [
+      "São Lucas",
+      "São João",
+      "São Paulo",
+      "São Pedro"
+    ],
+    "correta": "São Lucas"
+  },
+  {
+    "pergunta": "Qual profeta foi engolido por um grande peixe?",
+    "alternativas": [
+      "Jonas",
+      "Elias",
+      "Jeremias",
+      "Daniel"
+    ],
+    "correta": "Jonas"
+  },
+  {
+    "pergunta": "O que é o Tríduo Pascal?",
+    "alternativas": [
+      "Quinta-feira Santa, Sexta-feira Santa e Vigília Pascal",
+      "Quarta-feira de Cinzas, Domingo de Ramos e Páscoa",
+      "Pentecostes, Natal e Epifania",
+      "Domingo de Ramos, Páscoa e Pentecostes"
+    ],
+    "correta": "Quinta-feira Santa, Sexta-feira Santa e Vigília Pascal"
+  },
+  {
+    "pergunta": "Quantas estações tem a Via-Sacra?",
+    "alternativas": [
+      "14 (ou 15 com a ressurreição)",
+      "12",
+      "10",
+      "7"
+    ],
+    "correta": "14 (ou 15 com a ressurreição)"
+  },
+  {
+    "pergunta": "Qual o nome do lugar onde Moisés recebeu os 10 Mandamentos?",
+    "alternativas": [
+      "Monte Sinai",
+      "Monte Carmelo",
+      "Monte das Oliveiras",
+      "Monte Horebe"
+    ],
+    "correta": "Monte Sinai"
+  },
+  {
+    "pergunta": "Quem foi a única mulher juíza de Israel?",
+    "alternativas": [
+      "Débora",
+      "Rute",
+      "Ester",
+      "Miriã"
+    ],
+    "correta": "Débora"
+  },
+  {
+    "pergunta": "Em que ano aconteceu o Concílio Vaticano II?",
+    "alternativas": [
+      "1962 a 1965",
+      "1950 a 1953",
+      "1970 a 1973",
+      "1945 a 1948"
+    ],
+    "correta": "1962 a 1965"
+  },
+  {
+    "pergunta": "Quantos sacramentos reconhece a Igreja Católica?",
+    "alternativas": [
+      "Sete",
+      "Cinco",
+      "Doze",
+      "Três"
+    ],
+    "correta": "Sete"
+  },
+  {
+    "pergunta": "O que é a transubstanciação?",
+    "alternativas": [
+      "A transformação do pão e vinho no Corpo e Sangue de Cristo",
+      "A bênção do pão e vinho",
+      "A comunhão dos fiéis",
+      "O rito do batismo"
+    ],
+    "correta": "A transformação do pão e vinho no Corpo e Sangue de Cristo"
+  },
+  {
+    "pergunta": "O que é o Magistério da Igreja?",
+    "alternativas": [
+      "O ensinamento oficial da Igreja",
+      "Um livro sagrado",
+      "Um sacramento",
+      "Uma oração especial"
+    ],
+    "correta": "O ensinamento oficial da Igreja"
+  },
+  {
+    "pergunta": "Qual foi o milagre que Jesus realizou antes de multiplicar os pães?",
+    "alternativas": [
+      "Curou os doentes",
+      "Andou sobre as águas",
+      "Transformou água em vinho",
+      "Acalmou a tempestade"
+    ],
+    "correta": "Curou os doentes"
+  },
+  {
+    "pergunta": "Quantas bem-aventuranças existem?",
+    "alternativas": [
+      "Oito (Mateus 5)",
+      "Dez",
+      "Doze",
+      "Sete"
+    ],
+    "correta": "Oito (Mateus 5)"
+  },
+  {
+    "pergunta": "Quem escreveu o livro de Apocalipse?",
+    "alternativas": [
+      "São João Evangelista",
+      "São Paulo",
+      "São Pedro",
+      "São Mateus"
+    ],
+    "correta": "São João Evangelista"
+  },
+ {
+    "pergunta": "O que é o “Ano Litúrgico”?",
+    "alternativas": [
+      "O ciclo de celebrações da Igreja ao longo do ano",
+      "O calendário civil usado para festivais religiosos",
+      "Um conjunto de orações diárias",
+      "Um período de jejum obrigatório"
+    ],
+    "correta": "O ciclo de celebrações da Igreja ao longo do ano"
+  },
+  {
+    "pergunta": "Quem são os doutores da Igreja?",
+    "alternativas": [
+      "Santos com grande contribuição teológica ou doutrinal",
+      "Bispos que participaram dos Concílios Ecumênicos",
+      "Os primeiros papas da Igreja Católica",
+      "Missionários famosos da Idade Média"
+    ],
+    "correta": "Santos com grande contribuição teológica ou doutrinal"
+  },
+  {
+    "pergunta": "Qual é a oração central da liturgia eucarística?",
+    "alternativas": [
+      "Oração Eucarística",
+      "Pai Nosso",
+      "Glória",
+      "Credo"
+    ],
+    "correta": "Oração Eucarística"
+  },
+  {
+    "pergunta": "Qual a diferença entre apóstolo e discípulo?",
+    "alternativas": [
+      "Discípulo é seguidor, apóstolo é enviado",
+      "Apóstolo é o líder, discípulo é o professor",
+      "Discípulo é apóstolo aposentado",
+      "Apóstolo é discípulo do Antigo Testamento"
+    ],
+    "correta": "Discípulo é seguidor, apóstolo é enviado"
+  },
+  {
+    "pergunta": "Quantas vezes ao ano um católico deve comungar, no mínimo?",
+    "alternativas": [
+      "Pelo menos uma vez, na Páscoa",
+      "Duas vezes ao ano",
+      "Todas as semanas",
+      "Somente em ocasiões especiais"
+    ],
+    "correta": "Pelo menos uma vez, na Páscoa"
+  },
+  {
+    "pergunta": "Quem foi o primeiro papa após Pedro?",
+    "alternativas": [
+      "Lino",
+      "Clemente",
+      "Leão",
+      "Inocêncio"
+    ],
+    "correta": "Lino"
+  },
+  {
+    "pergunta": "O que é a graça santificante?",
+    "alternativas": [
+      "A presença permanente de Deus na alma",
+      "Um sacramento da Igreja Católica",
+      "Um ritual de purificação",
+      "Uma bênção concedida pelo bispo"
+    ],
+    "correta": "A presença permanente de Deus na alma"
+  },
+  {
+    "pergunta": "Qual é a principal oração mariana da Igreja?",
+    "alternativas": [
+      "Ave Maria",
+      "Salve Rainha",
+      "Angelus",
+      "Magnificat"
+    ],
+    "correta": "Ave Maria"
+  },
+  {
+    "pergunta": "O que é o Ecumenismo?",
+    "alternativas": [
+      "Esforço de unidade entre os cristãos",
+      "Movimento contra a secularização",
+      "Proselitismo para converter não-cristãos",
+      "Reunião dos líderes de diferentes religiões"
+    ],
+    "correta": "Esforço de unidade entre os cristãos"
+  },
+  {
+    "pergunta": "Qual o nome do movimento que busca a unidade dos cristãos?",
+    "alternativas": [
+      "Movimento Ecumênico",
+      "Reforma Protestante",
+      "Concílio Vaticano II",
+      "Aliança das Igrejas"
+    ],
+    "correta": "Movimento Ecumênico"
+  },
+  {
+    "pergunta": "O que é um concílio?",
+    "alternativas": [
+      "Reunião de bispos para tratar assuntos da Igreja",
+      "Peregrinação a Roma",
+      "Uma missa especial",
+      "Um grupo de monges isolados"
+    ],
+    "correta": "Reunião de bispos para tratar assuntos da Igreja"
+  },
+  {
+    "pergunta": "Quantas partes tem o Rosário completo?",
+    "alternativas": [
+      "Quatro mistérios (Gozosos, Dolorosos, Gloriosos e Luminosos)",
+      "Três mistérios (Gozosos, Dolorosos e Gloriosos)",
+      "Cinco mistérios diários",
+      "Seis mistérios principais"
+    ],
+    "correta": "Quatro mistérios (Gozosos, Dolorosos, Gloriosos e Luminosos)"
+  },
+  {
+    "pergunta": "O que representa a cor verde na liturgia?",
+    "alternativas": [
+      "Esperança e tempo comum",
+      "Penitência e arrependimento",
+      "Alegria e festa",
+      "Luto e silêncio"
+    ],
+    "correta": "Esperança e tempo comum"
+  },
+  {
+    "pergunta": "Qual foi o primeiro milagre registrado em Atos dos Apóstolos?",
+    "alternativas": [
+      "A cura do coxo na porta do Templo",
+      "A multiplicação dos pães",
+      "A ressurreição de Lázaro",
+      "O Pentecostes com fogo"
+    ],
+    "correta": "A cura do coxo na porta do Templo"
+  },
+  {
+    "pergunta": "O que significa a palavra “Igreja”?",
+    "alternativas": [
+      "Assembleia dos chamados",
+      "Templo sagrado",
+      "Comunidade dos santos",
+      "Casa de oração"
+    ],
+    "correta": "Assembleia dos chamados"
+  },
+  {
+    "pergunta": "O que é o pecado original?",
+    "alternativas": [
+      "O pecado herdado de Adão e Eva",
+      "Um pecado cometido em público",
+      "Um pecado grave contra a Igreja",
+      "Uma penitência obrigatória"
+    ],
+    "correta": "O pecado herdado de Adão e Eva"
+  },
+  {
+    "pergunta": "Qual santo é conhecido por ser grande teólogo e autor da Suma Teológica?",
+    "alternativas": [
+      "São Tomás de Aquino",
+      "São Francisco de Assis",
+      "São Jerônimo",
+      "São Gregório Magno"
+    ],
+    "correta": "São Tomás de Aquino"
+  },
+  {
+    "pergunta": "Quem escreveu a Carta aos Hebreus?",
+    "alternativas": [
+      "Autor desconhecido (atribuição tradicional a São Paulo)",
+      "São Pedro",
+      "São João",
+      "São Lucas"
+    ],
+    "correta": "Autor desconhecido (atribuição tradicional a São Paulo)"
+  },
+  {
+    "pergunta": "Qual o nome do livro poético que trata do amor conjugal na Bíblia?",
+    "alternativas": [
+      "Cântico dos Cânticos",
+      "Salmos",
+      "Provérbios",
+      "Eclesiastes"
+    ],
+    "correta": "Cântico dos Cânticos"
+  },
+  {
+    "pergunta": "Qual profeta falou do Servo Sofredor?",
+    "alternativas": [
+      "Isaías",
+      "Jeremias",
+      "Ezequiel",
+      "Daniel"
+    ],
+    "correta": "Isaías"
+  },
+  {
+    "pergunta": "Quantos dias Jesus ficou no deserto?",
+    "alternativas": [
+      "40 dias",
+      "7 dias",
+      "3 dias",
+      "50 dias"
+    ],
+    "correta": "40 dias"
+  },
+  {
+    "pergunta": "Qual o primeiro milagre relatado nos Evangelhos?",
+    "alternativas": [
+      "Transformação da água em vinho",
+      "Cura do paralítico",
+      "Multiplicação dos pães",
+      "Andar sobre as águas"
+    ],
+    "correta": "Transformação da água em vinho"
+  },
+  {
+    "pergunta": "Quantos capítulos tem o livro do Gênesis?",
+    "alternativas": [
+      "50",
+      "40",
+      "60",
+      "70"
+    ],
+    "correta": "50"
+  },
+  {
+    "pergunta": "Qual o nome da esposa de Abraão?",
+    "alternativas": [
+      "Sara",
+      "Rebeca",
+      "Rute",
+      "Miriã"
+    ],
+    "correta": "Sara"
+  },
+  {
+    "pergunta": "O que significa “Católico”?",
+    "alternativas": [
+      "Universal",
+      "Separado",
+      "Sagrado",
+      "Tradicional"
+    ],
+    "correta": "Universal"
+  },
+  {
+    "pergunta": "O que é uma paróquia?",
+    "alternativas": [
+      "Comunidade sob cuidado de um pároco",
+      "Igreja maior da cidade",
+      "Reunião dos fiéis",
+      "Escola religiosa"
+    ],
+    "correta": "Comunidade sob cuidado de um pároco"
+  },
+  {
+    "pergunta": "Quem pode ministrar o sacramento da Unção dos Enfermos?",
+    "alternativas": [
+      "Somente o sacerdote",
+      "Qualquer fiel batizado",
+      "O diácono",
+      "O bispo exclusivamente"
+    ],
+    "correta": "Somente o sacerdote"
+  },
+  {
+    "pergunta": "O que é a Tradição na Igreja?",
+    "alternativas": [
+      "Ensinos transmitidos desde os apóstolos",
+      "Livros sagrados não bíblicos",
+      "Regras criadas pela Igreja no século XX",
+      "Costumes locais da comunidade"
+    ],
+    "correta": "Ensinos transmitidos desde os apóstolos"
+  },
+  {
+    "pergunta": "Quantas vezes um cristão pode ser batizado?",
+    "alternativas": [
+      "Apenas uma vez",
+      "Duas vezes, se mudar de denominação",
+      "Sempre que desejar",
+      "A cada ano"
+    ],
+    "correta": "Apenas uma vez"
+  },
+  {
+    "pergunta": "Qual o nome do mar onde Jesus acalmou a tempestade?",
+    "alternativas": [
+      "Mar da Galileia",
+      "Mar Morto",
+      "Mar Vermelho",
+      "Mar Mediterrâneo"
+    ],
+    "correta": "Mar da Galileia"
+  },
+  {
+    "pergunta": "Quem escreveu os livros da Lei (Torá)?",
+    "alternativas": [
+      "Moisés (tradição judaica)",
+      "Abraão",
+      "Davi",
+      "Salomão"
+    ],
+    "correta": "Moisés (tradição judaica)"
+  },
+  {
+    "pergunta": "Qual é o centro da fé cristã?",
+    "alternativas": [
+      "A Ressurreição de Jesus",
+      "A criação do mundo",
+      "Os milagres de Jesus",
+      "O nascimento de Jesus"
+    ],
+    "correta": "A Ressurreição de Jesus"
+  },
+  {
+    "pergunta": "Qual é a sede da Igreja Católica?",
+    "alternativas": [
+      "Vaticano",
+      "Roma",
+      "Jerusalém",
+      "Lisboa"
+    ],
+    "correta": "Vaticano"
+  },
+  {
+    "pergunta": "Qual é o símbolo do Espírito Santo?",
+    "alternativas": [
+      "Pomba, fogo ou vento",
+      "Cruz, coroa ou águia",
+      "Cálice, pão ou peixe",
+      "Cordeiro, livro ou estrela"
+    ],
+    "correta": "Pomba, fogo ou vento"
+  },
+  {
+    "pergunta": "Qual é a diferença entre dogma e doutrina?",
+    "alternativas": [
+      "Dogma é verdade absoluta de fé; doutrina é ensino oficial",
+      "Dogma é uma tradição, doutrina é uma regra",
+      "Dogma é antiga, doutrina é moderna",
+      "Dogma é para leigos, doutrina é para clero"
+    ],
+    "correta": "Dogma é verdade absoluta de fé; doutrina é ensino oficial"
+  },
+  {
+    "pergunta": "Qual a importância do sábado para os judeus?",
+    "alternativas": [
+      "É o dia do descanso e da aliança com Deus",
+      "É o dia de jejum e oração",
+      "É o início do ano novo judaico",
+      "É o dia para peregrinação"
+    ],
+    "correta": "É o dia do descanso e da aliança com Deus"
+  },
+  {
+    "pergunta": "Quem era o profeta que viu um vale de ossos secos?",
+    "alternativas": [
+      "Ezequiel",
+      "Isaías",
+      "Jeremias",
+      "Daniel"
+    ],
+    "correta": "Ezequiel"
+  },
+  {
+    "pergunta": "Qual o nome do anjo que curou Tobias?",
+    "alternativas": [
+      "Rafael",
+      "Miguel",
+      "Gabriel",
+      "Uriel"
+    ],
+    "correta": "Rafael"
+  },
+  {
+    "pergunta": "O que é o Sínodo?",
+    "alternativas": [
+      "Assembleia de bispos convocada pelo Papa",
+      "Reunião de padres locais",
+      "Momento de oração pública",
+      "Eleição do Papa"
+    ],
+    "correta": "Assembleia de bispos convocada pelo Papa"
+  },
+  {
+    "pergunta": "Quem são os padres da Igreja?",
+    "alternativas": [
+      "Teólogos e líderes dos primeiros séculos do cristianismo",
+      "Sacerdotes ordenados após o Concílio Vaticano II",
+      "Bispos que governam as dioceses",
+      "Missionários do século XIX"
+    ],
+    "correta": "Teólogos e líderes dos primeiros séculos do cristianismo"
+  },
+  {
+    "pergunta": "Qual o significado de “Eucaristia”?",
+    "alternativas": [
+      "Ação de graças",
+      "Sacrifício do cordeiro",
+      "Reunião da comunidade",
+      "Batismo dos fiéis"
+    ],
+    "correta": "Ação de graças"
+  },
+  {
+    "pergunta": "O que é a Liturgia das Horas?",
+    "alternativas": [
+      "Oração diária oficial da Igreja",
+      "Celebração da missa dominical",
+      "Reunião dos bispos para oração",
+      "Jejum e penitência"
+    ],
+    "correta": "Oração diária oficial da Igreja"
+  },
+  {
+    "pergunta": "Quem instituiu o sacramento da Eucaristia?",
+    "alternativas": [
+      "Jesus na Última Ceia",
+      "São Pedro",
+      "São Paulo",
+      "O Papa"
+    ],
+    "correta": "Jesus na Última Ceia"
+  },
+  {
+    "pergunta": "O que significa o sinal da cruz?",
+    "alternativas": [
+      "Profissão de fé na Trindade e na redenção",
+      "Proteção contra o mal",
+      "Símbolo de autoridade papal",
+      "Marca de um batizado"
+    ],
+    "correta": "Profissão de fé na Trindade e na redenção"
+  },
+  {
+    "pergunta": "Qual foi o Papa que convocou o Concílio Vaticano II?",
+    "alternativas": [
+      "João XXIII",
+      "Pio XII",
+      "Paulo VI",
+      "Bento XVI"
+    ],
+    "correta": "João XXIII"
+  },
+  {
+    "pergunta": "Qual o nome da esposa de Isaac?",
+    "alternativas": [
+      "Rebeca",
+      "Sara",
+      "Raquel",
+      "Débora"
+    ],
+    "correta": "Rebeca"
+  },
+  {
+    "pergunta": "Quem disse “Minha alma engrandece o Senhor”?",
+    "alternativas": [
+      "Maria (Magnificat)",
+      "Isabel",
+      "Marta",
+      "Ana"
+    ],
+    "correta": "Maria (Magnificat)"
+  },
+  {
+    "pergunta": "Qual é o centro da Liturgia Católica?",
+    "alternativas": [
+      "A Eucaristia",
+      "A Palavra de Deus",
+      "A oração dos fiéis",
+      "O batismo"
+    ],
+    "correta": "A Eucaristia"
+  },
+{
+    "pergunta": "Qual a diferença entre Antigo e Novo Testamento?",
+    "alternativas": [
+      "Antigo: antes de Cristo; Novo: vida e missão de Jesus",
+      "Antigo: narrativas; Novo: leis e mandamentos",
+      "Antigo: apenas poesia; Novo: apenas histórias",
+      "Antigo: feito por profetas; Novo: feito por reis"
+    ],
+    "correta": "Antigo: antes de Cristo; Novo: vida e missão de Jesus"
+  },
+  {
+    "pergunta": "O que é um mártir?",
+    "alternativas": [
+      "Aquele que morre pela fé",
+      "Aquele que cura os doentes",
+      "Aquele que vive em solidão",
+      "Aquele que prega a palavra"
+    ],
+    "correta": "Aquele que morre pela fé"
+  },
+  {
+    "pergunta": "O que é o Jejum?",
+    "alternativas": [
+      "Privação voluntária de alimentos por penitência",
+      "Comer apenas frutas e legumes",
+      "Oração contínua durante o dia",
+      "Participar da missa sem comer"
+    ],
+    "correta": "Privação voluntária de alimentos por penitência"
+  },
+  {
+    "pergunta": "Quem foi Melquisedeque?",
+    "alternativas": [
+      "Sacerdote e rei mencionado em Gênesis",
+      "Profeta do Novo Testamento",
+      "Discípulo de Jesus",
+      "Rei dos judeus no exílio"
+    ],
+    "correta": "Sacerdote e rei mencionado em Gênesis"
+  },
+  {
+    "pergunta": "Qual a função do diácono na Igreja?",
+    "alternativas": [
+      "Serviço à caridade, palavra e liturgia",
+      "Comandar a missa",
+      "Escrever os Evangelhos",
+      "Ser bispo"
+    ],
+    "correta": "Serviço à caridade, palavra e liturgia"
+  },
+  {
+    "pergunta": "Quem escreveu o Evangelho mais longo?",
+    "alternativas": [
+      "Lucas",
+      "Mateus",
+      "João",
+      "Marcos"
+    ],
+    "correta": "Lucas"
+  },
+  {
+    "pergunta": "O que é a confissão auricular?",
+    "alternativas": [
+      "Confissão individual ao sacerdote",
+      "Confissão em grupo na igreja",
+      "Confissão pública na praça",
+      "Confissão escrita em papel"
+    ],
+    "correta": "Confissão individual ao sacerdote"
+  },
+  {
+    "pergunta": "Qual o nome da oração de agradecimento após a comunhão?",
+    "alternativas": [
+      "Ação de Graças",
+      "Pai Nosso",
+      "Glória",
+      "Ave Maria"
+    ],
+    "correta": "Ação de Graças"
+  },
+  {
+    "pergunta": "Qual era a religião de Paulo antes da conversão?",
+    "alternativas": [
+      "Judaísmo (fariseu)",
+      "Cristianismo",
+      "Paganismo romano",
+      "Egípcio antigo"
+    ],
+    "correta": "Judaísmo (fariseu)"
+  },
+  {
+    "pergunta": "O que é a excomunhão?",
+    "alternativas": [
+      "Separação do fiel da comunhão com a Igreja",
+      "Promoção a líder da Igreja",
+      "Batismo especial",
+      "Celebração de uma festa religiosa"
+    ],
+    "correta": "Separação do fiel da comunhão com a Igreja"
+  },
+  {
+    "pergunta": "Qual o nome do homem que caiu de um cavalo ao ver Jesus?",
+    "alternativas": [
+      "Saulo (São Paulo)",
+      "Pedro",
+      "Tomé",
+      "Judas"
+    ],
+    "correta": "Saulo (São Paulo)"
+  },
+  {
+    "pergunta": "Quem foi o primeiro missionário entre os gentios?",
+    "alternativas": [
+      "São Paulo",
+      "Pedro",
+      "Tiago",
+      "João Batista"
+    ],
+    "correta": "São Paulo"
+  },
+  {
+    "pergunta": "Quem é o padroeiro dos catequistas?",
+    "alternativas": [
+      "São Carlos Borromeu",
+      "São Francisco",
+      "São João Paulo II",
+      "São Tomás de Aquino"
+    ],
+    "correta": "São Carlos Borromeu"
+  },
+  {
+    "pergunta": "Quem foi o Papa durante a Jornada Mundial da Juventude no Brasil?",
+    "alternativas": [
+      "Papa Francisco",
+      "Papa Bento XVI",
+      "Papa João Paulo II",
+      "Papa Paulo VI"
+    ],
+    "correta": "Papa Francisco"
+  },
+  {
+    "pergunta": "Qual livro bíblico fala da sabedoria?",
+    "alternativas": [
+      "Provérbios e Eclesiástico",
+      "Gênesis e Êxodo",
+      "Apocalipse e João",
+      "Salmos e Isaías"
+    ],
+    "correta": "Provérbios e Eclesiástico"
+  },
+  {
+    "pergunta": "Qual é a promessa feita a Abraão?",
+    "alternativas": [
+      "Ter uma descendência numerosa e uma terra",
+      "Ser rei dos judeus",
+      "Ter um templo construído",
+      "Viver para sempre"
+    ],
+    "correta": "Ter uma descendência numerosa e uma terra"
+  },
+  {
+    "pergunta": "Qual o nome do canto que Maria entoou após visitar Isabel?",
+    "alternativas": [
+      "Magnificat",
+      "Salmo 23",
+      "Glória in Excelsis",
+      "Benedictus"
+    ],
+    "correta": "Magnificat"
+  },
+  {
+    "pergunta": "O que é o Catecismo da Igreja Católica?",
+    "alternativas": [
+      "Compêndio oficial da doutrina católica",
+      "Livro de orações",
+      "História dos papas",
+      "Regulamento das missas"
+    ],
+    "correta": "Compêndio oficial da doutrina católica"
+  },
+  {
+    "pergunta": "Quem são os santos Inocentes?",
+    "alternativas": [
+      "Crianças mortas por Herodes",
+      "Apóstolos que morreram jovens",
+      "Mártires da perseguição romana",
+      "Anjos protetores"
+    ],
+    "correta": "Crianças mortas por Herodes"
+  },
+  {
+    "pergunta": "Quantos anos durou o cativeiro na Babilônia?",
+    "alternativas": [
+      "70 anos",
+      "40 anos",
+      "100 anos",
+      "50 anos"
+    ],
+    "correta": "70 anos"
+  },
+  {
+    "pergunta": "Quem reconstruiu Jerusalém após o exílio?",
+    "alternativas": [
+      "Neemias",
+      "Esdras",
+      "Davi",
+      "Salomão"
+    ],
+    "correta": "Neemias"
+  },
+  {
+    "pergunta": "Quem viu o céu aberto e Jesus à direita de Deus?",
+    "alternativas": [
+      "Santo Estêvão",
+      "Paulo",
+      "Pedro",
+      "João"
+    ],
+    "correta": "Santo Estêvão"
+  },
+  {
+    "pergunta": "O que é o tempo do Advento?",
+    "alternativas": [
+      "Preparação para o Natal",
+      "Período da Páscoa",
+      "Tempo de Pentecostes",
+      "Festa dos Santos"
+    ],
+    "correta": "Preparação para o Natal"
+  },
+  {
+    "pergunta": "O que é o Kerigma?",
+    "alternativas": [
+      "Anúncio fundamental da fé cristã",
+      "Rito de batismo",
+      "Confissão dos pecados",
+      "Celebração da missa"
+    ],
+    "correta": "Anúncio fundamental da fé cristã"
+  },
+  {
+    "pergunta": "Qual sacramento é porta de entrada da vida cristã?",
+    "alternativas": [
+      "Batismo",
+      "Confirmação",
+      "Eucaristia",
+      "Matrimônio"
+    ],
+    "correta": "Batismo"
+  },
+  {
+    "pergunta": "Qual é a oração central da fé cristã?",
+    "alternativas": [
+      "Credo",
+      "Pai Nosso",
+      "Ave Maria",
+      "Glória"
+    ],
+    "correta": "Credo"
+  }
+],
+  dificil: [
+  {
+    "pergunta": "Quem foi Melquisedeque?",
+    "alternativas": ["Rei de Salém e sacerdote de Deus Altíssimo", "Um profeta do deserto", "Pai de Abraão", "Um rei cananeu"],
+    "correta": "Rei de Salém e sacerdote de Deus Altíssimo"
+  },
+  {
+    "pergunta": "O que significa 'Pentateuco'?",
+    "alternativas": ["Cinco primeiros livros da Bíblia", "Os livros poéticos", "Os evangelhos", "As cartas de Paulo"],
+    "correta": "Cinco primeiros livros da Bíblia"
+  },
+  {
+    "pergunta": "Pais de João Batista?",
+    "alternativas": ["Zacarias e Isabel", "Joquim e Ana", "José e Maria", "Eli e Hanna"],
+    "correta": "Zacarias e Isabel"
+  },
+  {
+    "pergunta": "Profeta do vale de ossos secos?",
+    "alternativas": ["Ezequiel", "Jeremias", "Isaías", "Daniel"],
+    "correta": "Ezequiel"
+  },
+  {
+    "pergunta": "Quem foi Débora?",
+    "alternativas": ["Profetisa e juíza de Israel", "Rainha da Pérsia", "Mãe de Samuel", "Esposa de Jó"],
+    "correta": "Profetisa e juíza de Israel"
+  },
+  {
+    "pergunta": "Livro que não menciona Deus?",
+    "alternativas": ["Ester", "Rute", "Cânticos", "Jonas"],
+    "correta": "Ester"
+  },
+  {
+    "pergunta": "Autor do livro de Sabedoria?",
+    "alternativas": ["Tradicionalmente Salomão", "Moisés", "David", "Esdras"],
+    "correta": "Tradicionalmente Salomão"
+  },
+  {
+    "pergunta": "O que é Shemá Israel?",
+    "alternativas": ["Profissão de fé judaica", "Um cântico de louvor", "Um livro apócrifo", "Uma festa religiosa"],
+    "correta": "Profissão de fé judaica"
+  },
+  {
+    "pergunta": "O que é Teofania?",
+    "alternativas": ["Manifestação visível de Deus", "Um sacramento", "Um tipo de oração", "Um concílio eclesiástico"],
+    "correta": "Manifestação visível de Deus"
+  },
+  {
+    "pergunta": "Autor da Carta aos Hebreus?",
+    "alternativas": ["Desconhecido", "Paulo", "Pedro", "Tiago"],
+    "correta": "Desconhecido"
+  },
+  {
+    "pergunta": "Quem foi Gamaliel?",
+    "alternativas": ["Mestre fariseu de Paulo", "Um dos apóstolos", "Rei de Israel", "Pai de João Batista"],
+    "correta": "Mestre fariseu de Paulo"
+  },
+  {
+    "pergunta": "Salmo mais longo?",
+    "alternativas": ["Salmo 119", "Salmo 23", "Salmo 91", "Salmo 150"],
+    "correta": "Salmo 119"
+  },
+  {
+    "pergunta": "Capítulos de Isaías?",
+    "alternativas": ["66", "50", "40", "24"],
+    "correta": "66"
+  },
+  {
+    "pergunta": "Quem foi Onésimo?",
+    "alternativas": ["Escravo convertido por Paulo", "Um dos evangelistas", "Discípulo de Pedro", "Mártir cristão"],
+    "correta": "Escravo convertido por Paulo"
+  },
+  {
+    "pergunta": "Cidade morna do Apocalipse?",
+    "alternativas": ["Laodiceia", "Éfeso", "Sardes", "Pérgamo"],
+    "correta": "Laodiceia"
+  },
+  {
+    "pergunta": "Conteúdo do Concílio Vaticano II?",
+    "alternativas": ["Renovação e abertura ao mundo", "Definição da infalibilidade papal", "Criação da Inquisição", "Estabelecimento do Index"],
+    "correta": "Renovação e abertura ao mundo"
+  },
+  {
+    "pergunta": "O que é transubstanciação?",
+    "alternativas": ["Mudança do pão e vinho", "Batismo de crianças", "Perdão dos pecados", "Ascensão aos céus"],
+    "correta": "Mudança do pão e vinho"
+  },
+  {
+    "pergunta": "Quem foi Cireneu?",
+    "alternativas": ["Ajudou Jesus a carregar a cruz", "Um dos 12 apóstolos", "Discípulo amado", "Primeiro mártir"],
+    "correta": "Ajudou Jesus a carregar a cruz"
+  },
+  {
+    "pergunta": "O que é a Septuaginta?",
+    "alternativas": ["Versão grega do Antigo Testamento", "Tradução latina da Bíblia", "Bíblia hebraica", "Livro de orações"],
+    "correta": "Versão grega do Antigo Testamento"
+  },
+  {
+    "pergunta": "Onde Paulo foi apedrejado?",
+    "alternativas": ["Listra", "Damasco", "Atenas", "Roma"],
+    "correta": "Listra"
+  },
+  {
+    "pergunta": "O que é doutor da Igreja?",
+    "alternativas": ["Santo com grande doutrina", "Papa emérito", "Bispo diocesano", "Teólogo medieval"],
+    "correta": "Santo com grande doutrina"
+  },
+  {
+    "pergunta": "Quantos concílios ecumênicos?",
+    "alternativas": ["21", "7", "12", "15"],
+    "correta": "21"
+  },
+  {
+    "pergunta": "Quem foi Tertuliano?",
+    "alternativas": ["Teólogo cristão primitivo", "Um apóstolo", "Rei de Judá", "Discípulo de João"],
+    "correta": "Teólogo cristão primitivo"
+  },
+  {
+    "pergunta": "O que significa 'ex cathedra'?",
+    "alternativas": ["Declaração infalível papal", "Doutrina da Igreja", "Concílio ecumênico", "Cânon bíblico"],
+    "correta": "Declaração infalível papal"
+  },
+  {
+    "pergunta": "Papa do Vaticano II?",
+    "alternativas": ["João XXIII", "Pio XII", "Paulo VI", "Bento XVI"],
+    "correta": "João XXIII"
+  },
+  {
+    "pergunta": "O que são deuterocanônicos?",
+    "alternativas": ["Livros aceitos pelos católicos", "Evangelhos apócrifos", "Cartas de Paulo", "Salmos extras"],
+    "correta": "Livros aceitos pelos católicos"
+  },
+  {
+    "pergunta": "O que é o Magistério?",
+    "alternativas": ["Autoridade de ensino da Igreja", "Tribunal eclesiástico", "Conselho de bispos", "Doutrina dos santos"],
+    "correta": "Autoridade de ensino da Igreja"
+  },
+  {
+    "pergunta": "Quem escreveu a Suma Teológica?",
+    "alternativas": ["São Tomás de Aquino", "Santo Agostinho", "São Jerônimo", "São Boaventura"],
+    "correta": "São Tomás de Aquino"
+  },
+  {
+    "pergunta": "Fundador da Companhia de Jesus?",
+    "alternativas": ["Santo Inácio de Loyola", "São Francisco Xavier", "São Domingos", "São Bento"],
+    "correta": "Santo Inácio de Loyola"
+  },
+  {
+    "pergunta": "Profeta que casou com prostituta?",
+    "alternativas": ["Oseias", "Amós", "Miquéias", "Habacuque"],
+    "correta": "Oseias"
+  },
+  {
+    "pergunta": "Autores das Cartas Católicas?",
+    "alternativas": ["Pedro, Tiago, João, Judas", "Paulo, Lucas, Marcos, Mateus", "Timóteo, Tito, Filemom, Hebreus", "Atos, Apocalipse, Romanos, Coríntios"],
+    "correta": "Pedro, Tiago, João, Judas"
+  },
+  {
+    "pergunta": "O que são patriarcas?",
+    "alternativas": ["Abraão, Isaac e Jacó", "Moisés, Aarão e Josué", "David, Salomão e Ezequias", "Noé, Daniel e Jó"],
+    "correta": "Abraão, Isaac e Jacó"
+  },
+  {
+    "pergunta": "Significado de 'Hosana'?",
+    "alternativas": ["Salva-nos, por favor", "Aleluia", "Deus é grande", "Louvado seja"],
+    "correta": "Salva-nos, por favor"
+  },
+  {
+    "pergunta": "Evangelho dos Reis Magos?",
+    "alternativas": ["Mateus", "Lucas", "Marcos", "João"],
+    "correta": "Mateus"
+  },
+  {
+    "pergunta": "O que é o livro de Baruc?",
+    "alternativas": ["Livro deuterocanônico", "Livro histórico", "Evangelho apócrifo", "Carta paulina"],
+    "correta": "Livro deuterocanônico"
+  },
+  {
+    "pergunta": "Rei que matou os inocentes?",
+    "alternativas": ["Herodes", "Nabucodonosor", "Faraó", "Pilatos"],
+    "correta": "Herodes"
+  },
+  {
+    "pergunta": "Nome hebraico de Jesus?",
+    "alternativas": ["Yeshua", "Emmanuel", "Messias", "Yahweh"],
+    "correta": "Yeshua"
+  },
+  {
+    "pergunta": "O que é ecumenismo?",
+    "alternativas": ["Unidade entre cristãos", "Doutrina católica", "Concílio ecumênico", "Movimento protestante"],
+    "correta": "Unidade entre cristãos"
+  },
+  {
+    "pergunta": "Quem foi martirizado com Paulo?",
+    "alternativas": ["Pedro", "Estêvão", "Tiago", "Barnabé"],
+    "correta": "Pedro"
+  },
+  {
+    "pergunta": "O que é kénosis?",
+    "alternativas": ["Esvaziamento de Cristo", "Ascensão aos céus", "Ressurreição", "Encarnação"],
+    "correta": "Esvaziamento de Cristo"
+  },
+  {
+    "pergunta": "O que é Ofício Divino?",
+    "alternativas": ["Liturgia das Horas", "Missa dominical", "Sacramento da ordem", "Oração do terço"],
+    "correta": "Liturgia das Horas"
+  },
+  {
+    "pergunta": "O que é Lectio Divina?",
+    "alternativas": ["Leitura orante da Bíblia", "Estudo teológico", "Pregação evangélica", "Catequese"],
+    "correta": "Leitura orante da Bíblia"
+  },
+  {
+    "pergunta": "Quem foi São Policarpo?",
+    "alternativas": ["Bispo mártir da Igreja Primitiva", "Papa do século II", "Discípulo de Paulo", "Eremita do deserto"],
+    "correta": "Bispo mártir da Igreja Primitiva"
+  },
+{
+    "pergunta": "Heresia combatida em Éfeso?",
+    "alternativas": ["Nestorianismo", "Arianismo", "Gnosticismo", "Pelagianismo"],
+    "correta": "Nestorianismo"
+  },
+  {
+    "pergunta": "Língua do Novo Testamento?",
+    "alternativas": ["Grego", "Latim", "Hebraico", "Aramaico"],
+    "correta": "Grego"
+  },
+  {
+    "pergunta": "O que é Cristo Pantocrator?",
+    "alternativas": ["Cristo Todo-Poderoso", "Cristo Misericordioso", "Cristo Redentor", "Cristo Juiz"],
+    "correta": "Cristo Todo-Poderoso"
+  },
+  {
+    "pergunta": "O que é indulgência?",
+    "alternativas": ["Remissão da pena temporal", "Perdão dos pecados", "Graça santificante", "Sacramento de cura"],
+    "correta": "Remissão da pena temporal"
+  },
+  {
+    "pergunta": "Quem foi São Jerônimo?",
+    "alternativas": ["Tradutor da Bíblia para o latim", "Fundador dos beneditinos", "Papa do século IV", "Mártir romano"],
+    "correta": "Tradutor da Bíblia para o latim"
+  },
+  {
+    "pergunta": "O que é a Vulgata?",
+    "alternativas": ["Bíblia em latim", "Bíblia em grego", "Bíblia em hebraico", "Tradução protestante"],
+    "correta": "Bíblia em latim"
+  },
+  {
+    "pergunta": "O que é dogma da Imaculada Conceição?",
+    "alternativas": ["Maria concebida sem pecado original", "Virgindade perpétua de Maria", "Assunção de Maria", "Maternidade divina de Maria"],
+    "correta": "Maria concebida sem pecado original"
+  },
+  {
+    "pergunta": "Qual concílio definiu oficialmente o cânon da Bíblia?",
+    "alternativas": ["Concílio de Cartago (397 d.C.)", "Concílio de Niceia", "Concílio de Trento", "Concílio Vaticano II"],
+    "correta": "Concílio de Cartago (397 d.C.)"
+  },
+  {
+    "pergunta": "Qual o nome da bula papal que instituiu a doutrina da Imaculada Conceição?",
+    "alternativas": ["Ineffabilis Deus (1854)", "Dei Verbum", "Lumen Gentium", "Humani Generis"],
+    "correta": "Ineffabilis Deus (1854)"
+  },
+  {
+    "pergunta": "Qual é o dogma mariano proclamado em 1950?",
+    "alternativas": ["Assunção de Maria", "Imaculada Conceição", "Maternidade divina", "Virgindade perpétua"],
+    "correta": "Assunção de Maria"
+  },
+  {
+    "pergunta": "Quem foi o papa que instituiu o Rosário como oração oficial da Igreja?",
+    "alternativas": ["Papa Pio V", "Papa Gregório I", "Papa Leão XIII", "Papa João Paulo II"],
+    "correta": "Papa Pio V"
+  },
+  {
+    "pergunta": "Qual padre da Igreja é chamado de 'martelo dos hereges'?",
+    "alternativas": ["Santo Antônio de Lisboa (ou de Pádua)", "Santo Agostinho", "São Jerônimo", "São Tomás de Aquino"],
+    "correta": "Santo Antônio de Lisboa (ou de Pádua)"
+  },
+  {
+    "pergunta": "Qual é o termo teológico para a união das duas naturezas de Cristo?",
+    "alternativas": ["União hipostática", "União mística", "Comunhão de santos", "Consubstancialidade"],
+    "correta": "União hipostática"
+  },
+  {
+    "pergunta": "Quantos concílios ecumênicos a Igreja reconhece oficialmente?",
+    "alternativas": ["21 concílios ecumênicos", "7 concílios ecumênicos", "15 concílios ecumênicos", "10 concílios ecumênicos"],
+    "correta": "21 concílios ecumênicos"
+  },
+  {
+    "pergunta": "Em qual concílio foi definido o dogma da Trindade?",
+    "alternativas": ["Concílio de Niceia I (325 d.C.)", "Concílio de Trento", "Concílio Vaticano I", "Concílio de Éfeso"],
+    "correta": "Concílio de Niceia I (325 d.C.)"
+  },
+  {
+    "pergunta": "Quem foi o último dos Padres da Igreja do Ocidente?",
+    "alternativas": ["São Gregório Magno", "Santo Agostinho", "São Jerônimo", "Santo Ambrósio"],
+    "correta": "São Gregório Magno"
+  },
+  {
+    "pergunta": "O que é a escatologia cristã?",
+    "alternativas": ["Estudo das realidades últimas: morte, juízo, céu e inferno", "Estudo dos anjos", "Estudo da criação", "Estudo da graça"],
+    "correta": "Estudo das realidades últimas: morte, juízo, céu e inferno"
+  },
+  {
+    "pergunta": "Quem foi o primeiro Papa a renunciar voluntariamente?",
+    "alternativas": ["Celestino V", "Bento XVI", "Gregório XII", "Ponciano"],
+    "correta": "Celestino V"
+  },
+  {
+    "pergunta": "Quem foi Santo Irineu de Lyon e o que combateu?",
+    "alternativas": ["Bispo e mártir; combateu o gnosticismo", "Padre apostólico; combateu o arianismo", "Doutor da Igreja; combateu o pelagianismo", "Missionário; combateu o nestorianismo"],
+    "correta": "Bispo e mártir; combateu o gnosticismo"
+  },
+  {
+    "pergunta": "O que é a Teologia Apofática?",
+    "alternativas": ["Conhecimento de Deus por negação (via negativa)", "Teologia baseada na revelação", "Teologia da prosperidade", "Teologia da libertação"],
+    "correta": "Conhecimento de Deus por negação (via negativa)"
+  },
+  {
+    "pergunta": "Quantos livros há no cânon do Antigo Testamento segundo a Igreja Católica?",
+    "alternativas": ["46 livros", "39 livros", "27 livros", "73 livros"],
+    "correta": "46 livros"
+  },
+  {
+    "pergunta": "O que é o 'Filioque' na controvérsia entre católicos e ortodoxos?",
+    "alternativas": ["Adição 'e do Filho' ao Credo Niceno", "Doutrina da predestinação", "Questão das imagens sagradas", "Disputa sobre a autoridade papal"],
+    "correta": "Adição 'e do Filho' ao Credo Niceno"
+  },
+  {
+    "pergunta": "Quem foi o reformador que fundou o jansenismo?",
+    "alternativas": ["Cornelius Jansen", "Martinho Lutero", "João Calvino", "Ulrico Zuínglio"],
+    "correta": "Cornelius Jansen"
+  },
+  {
+    "pergunta": "O que é a Patrística?",
+    "alternativas": ["Estudo dos Padres da Igreja", "Estudo dos papas", "Estudo dos mártires", "Estudo dos concílios"],
+    "correta": "Estudo dos Padres da Igreja"
+  },
+  {
+    "pergunta": "Quem foi o primeiro Papa a usar o nome 'Francisco'?",
+    "alternativas": ["Papa Francisco (2013)", "Papa Francisco I", "Papa João Francisco", "Papa Pio Francisco"],
+    "correta": "Papa Francisco (2013)"
+  },
+  {
+    "pergunta": "Qual é o significado de 'Homoousios' no Credo?",
+    "alternativas": ["Da mesma substância (o Filho é consubstancial ao Pai)", "De substância semelhante", "De substância diferente", "De natureza humana"],
+    "correta": "Da mesma substância (o Filho é consubstancial ao Pai)"
+  },
+  {
+    "pergunta": "Quem foi São Máximo Confessor?",
+    "alternativas": ["Teólogo que combateu o monotelismo", "Padre do deserto", "Papa do século VII", "Mártir romano"],
+    "correta": "Teólogo que combateu o monotelismo"
+  },
+  {
+    "pergunta": "Quem escreveu 'A Cidade de Deus'?",
+    "alternativas": ["Santo Agostinho", "São Tomás de Aquino", "São Jerônimo", "São Gregório Magno"],
+    "correta": "Santo Agostinho"
+  },
+  {
+    "pergunta": "O que é o 'Kerygma'?",
+    "alternativas": ["Anúncio inicial e essencial do Evangelho", "Liturgia da Palavra", "Pregação moral", "Catequese avançada"],
+    "correta": "Anúncio inicial e essencial do Evangelho"
+  },
+  {
+    "pergunta": "Quem foi Tertuliano e o que ele contribuiu?",
+    "alternativas": ["Pai da Igreja latina; primeiro a usar o termo 'Trindade'", "Padre apostólico; defensor da divindade de Cristo", "Doutor da Igreja; autor das Confissões", "Missionário; tradutor da Bíblia"],
+    "correta": "Pai da Igreja latia; primeiro a usar o termo 'Trindade'"
+  },
+  {
+    "pergunta": "O que significa 'ex opere operato' nos sacramentos?",
+    "alternativas": ["A eficácia do sacramento não depende da santidade do ministro", "A graça depende da fé do receptor", "Os sacramentos são símbolos", "A validade requer intenção perfeita"],
+    "correta": "A eficácia do sacramento não depende da santidade do ministro"
+  },
+  {
+    "pergunta": "Qual o nome do documento conciliar que trata da Liturgia no Vaticano II?",
+    "alternativas": ["Sacrosanctum Concilium", "Dei Verbum", "Lumen Gentium", "Gaudium et Spes"],
+    "correta": "Sacrosanctum Concilium"
+  },
+  {
+    "pergunta": "Quem é o autor da 'Imitação de Cristo'?",
+    "alternativas": ["Tomás de Kempis", "Santo Inácio de Loyola", "São Francisco de Sales", "Santa Teresa de Ávila"],
+    "correta": "Tomás de Kempis"
+  },
+  {
+    "pergunta": "Quem foi São João Damasceno e sua contribuição?",
+    "alternativas": ["Defensor das imagens sagradas (iconodulia)", "Pai do monasticismo", "Doutor da Igreja grega", "Teólogo da Trindade"],
+    "correta": "Defensor das imagens sagradas (iconodulia)"
+  },
+  {
+    "pergunta": "Qual o termo que descreve o arrependimento motivado apenas pelo medo do inferno?",
+    "alternativas": ["Contrição imperfeita (ou atrição)", "Contrição perfeita", "Penitência", "Conversão"],
+    "correta": "Contrição imperfeita (ou atrição)"
+  },
+  {
+    "pergunta": "Qual santo fundou a ordem dos cartuxos?",
+    "alternativas": ["São Bruno", "São Bento", "São Francisco", "São Domingos"],
+    "correta": "São Bruno"
+  },
+  {
+    "pergunta": "Quem escreveu as 'Confissões' e 'De Trinitate'?",
+    "alternativas": ["Santo Agostinho", "São Tomás de Aquino", "São Boaventura", "Santo Anselmo"],
+    "correta": "Santo Agostinho"
+  },
+  {
+    "pergunta": "Qual santo espanhol fundou a Ordem dos Jesuítas?",
+    "alternativas": ["Santo Inácio de Loyola", "São Francisco Xavier", "São Domingos de Gusmão", "São João da Cruz"],
+    "correta": "Santo Inácio de Loyola"
+  },
+  {
+    "pergunta": "Em que século ocorreu o Grande Cisma do Oriente?",
+    "alternativas": ["Século XI (ano 1054)", "Século IV", "Século XVI", "Século VIII"],
+    "correta": "Século XI (ano 1054)"
+  },
+  {
+    "pergunta": "Quem foram os primeiros monges do deserto?",
+    "alternativas": ["Padres do deserto, como Santo Antão do Egito", "Os beneditinos", "Os franciscanos", "Os dominicanos"],
+    "correta": "Padres do deserto, como Santo Antão do Egito"
+  },
+  {
+    "pergunta": "O que é a 'economia da salvação'?",
+    "alternativas": ["Plano de Deus para salvar a humanidade", "Administração dos bens da Igreja", "Doutrina social da Igreja", "Teologia da prosperidade"],
+    "correta": "Plano de Deus para salvar a humanidade"
+  },
+  {
+    "pergunta": "Qual é o significado do nome 'Melquisedec' na Bíblia?",
+    "alternativas": ["Rei da justiça", "Rei da paz", "Servo de Deus", "Profeta do Altíssimo"],
+    "correta": "Rei da justiça"
+  },
+  {
+    "pergunta": "O que é 'sensus fidei'?",
+    "alternativas": ["Intuição espiritual da fé pelos fiéis", "Doutrina da Igreja", "Magistério papal", "Tradição apostólica"],
+    "correta": "Intuição espiritual da fé pelos fiéis"
+  },
+{
+    "pergunta": "Qual encíclica papal combateu o comunismo no século XX?",
+    "alternativas": ["Divini Redemptoris (Pio XI)", "Rerum Novarum (Leão XIII)", "Pacem in Terris (João XXIII)", "Quadragesimo Anno (Pio XI)"],
+    "correta": "Divini Redemptoris (Pio XI)"
+  },
+  {
+    "pergunta": "O que significa 'koinonia'?",
+    "alternativas": ["Comunhão, partilha entre os cristãos", "Batismo em línguas", "Reunião de bispos", "Sacramento da penitência"],
+    "correta": "Comunhão, partilha entre os cristãos"
+  },
+  {
+    "pergunta": "Quem é conhecido como o 'Doutor Angélico'?",
+    "alternativas": ["São Tomás de Aquino", "Santo Agostinho", "São Boaventura", "São Jerônimo"],
+    "correta": "São Tomás de Aquino"
+  },
+  {
+    "pergunta": "O que é uma encíclica?",
+    "alternativas": ["Carta circular do Papa sobre doutrina ou moral", "Documento conciliar", "Sermão episcopal", "Tratado teológico"],
+    "correta": "Carta circular do Papa sobre doutrina ou moral"
+  },
+  {
+    "pergunta": "Qual é o ministério ordenado que não pode celebrar a Eucaristia?",
+    "alternativas": ["Diácono", "Padre", "Bispo", "Arcebispo"],
+    "correta": "Diácono"
+  },
+  {
+    "pergunta": "O que é a 'oração de epiclese'?",
+    "alternativas": ["Invocação do Espírito Santo sobre as oferendas", "Oração final da missa", "Confissão dos pecados", "Canto de entrada"],
+    "correta": "Invocação do Espírito Santo sobre as oferendas"
+  },
+  {
+    "pergunta": "Qual a diferença entre infalibilidade e impecabilidade?",
+    "alternativas": ["Infalibilidade: não erra em fé/moral; impecabilidade: não peca", "Infalibilidade: não peca; impecabilidade: não erra", "São sinônimos", "Infalibilidade é papal; impecabilidade é episcopal"],
+    "correta": "Infalibilidade: não erra em fé/moral; impecabilidade: não peca"
+  },
+  {
+    "pergunta": "Qual Papa convocou o Concílio de Trento?",
+    "alternativas": ["Papa Paulo III", "Papa Pio V", "Papa Júlio II", "Papa Gregório XIII"],
+    "correta": "Papa Paulo III"
+  },
+  {
+    "pergunta": "Qual é o sacramento que imprime 'caráter indelével'?",
+    "alternativas": ["Batismo, Confirmação e Ordem", "Penitência e Unção dos Enfermos", "Eucaristia e Matrimônio", "Todos os sacramentos"],
+    "correta": "Batismo, Confirmação e Ordem"
+  },
+  {
+    "pergunta": "Qual santo introduziu a prática das 'vias espirituais': purgativa, iluminativa e unitiva?",
+    "alternativas": ["São João da Cruz", "Santo Inácio de Loyola", "São Francisco de Assis", "Santa Teresa de Ávila"],
+    "correta": "São João da Cruz"
+  },
+{
+    "pergunta": "Quem foi São Leão Magno?",
+    "alternativas": ["Papa e doutor da Igreja; combateu o monofisismo", "Um bispo espanhol do século V", "Um mártir romano", "Fundador da Ordem dos Franciscanos"],
+    "correta": "Papa e doutor da Igreja; combateu o monofisismo"
+  },
+  {
+    "pergunta": "O que é o 'mistério pascal'?",
+    "alternativas": ["Paixão, morte, ressurreição e glorificação de Cristo", "O sacramento da Eucaristia", "A festa da Páscoa judaica", "A descida de Cristo ao inferno"],
+    "correta": "Paixão, morte, ressurreição e glorificação de Cristo"
+  },
+  {
+    "pergunta": "Qual foi o maior concílio em número de documentos e sessões?",
+    "alternativas": ["Concílio de Trento", "Concílio Vaticano II", "Concílio de Niceia I", "Concílio de Calcedônia"],
+    "correta": "Concílio de Trento"
+  },
+  {
+    "pergunta": "Quem foi o Papa que definiu o dogma da infalibilidade papal?",
+    "alternativas": ["Pio IX, Concílio Vaticano I (1870)", "Leão XIII", "Pio XII", "Gregório XVI"],
+    "correta": "Pio IX, Concílio Vaticano I (1870)"
+  },
+  {
+    "pergunta": "Qual santo é conhecido por seu tratado sobre o amor de Deus?",
+    "alternativas": ["São Francisco de Sales", "Santo Agostinho", "São João da Cruz", "São Tomás de Aquino"],
+    "correta": "São Francisco de Sales"
+  },
+  {
+    "pergunta": "O que é a 'anamnese' na missa?",
+    "alternativas": ["Recordação da morte e ressurreição de Cristo", "A leitura do Evangelho", "A homilia do sacerdote", "A oração do Pai-Nosso"],
+    "correta": "Recordação da morte e ressurreição de Cristo"
+  },
+  {
+    "pergunta": "Qual apóstolo evangelizou a Índia, segundo a tradição?",
+    "alternativas": ["São Tomé", "São Bartolomeu", "São Mateus", "São Tiago Maior"],
+    "correta": "São Tomé"
+  },
+  {
+    "pergunta": "O que é uma indulgência plenária?",
+    "alternativas": ["Remissão total da pena temporal dos pecados já perdoados", "Perdão dos pecados mortais", "A absolvição sacramental", "Uma bênção papal"],
+    "correta": "Remissão total da pena temporal dos pecados já perdoados"
+  },
+  {
+    "pergunta": "O que significa 'lex orandi, lex credendi'?",
+    "alternativas": ["A lei da oração é a lei da fé", "A lei do amor é a lei da vida", "A lei da Igreja é a lei de Deus", "A lei da caridade é a lei da verdade"],
+    "correta": "A lei da oração é a lei da fé"
+  },
+  {
+    "pergunta": "Qual o significado de 'kenosis' em Cristo?",
+    "alternativas": ["Esvaziamento da sua divindade por amor (Fp 2,6-11)", "Sua encarnação", "Sua ressurreição", "Sua ascensão aos céus"],
+    "correta": "Esvaziamento da sua divindade por amor (Fp 2,6-11)"
+  },
+{
+    "pergunta": "Quem fundou a ordem dominicana?",
+    "alternativas": ["São Domingos de Gusmão", "São Francisco de Assis", "Santo Inácio de Loyola", "São Bento de Núrsia"],
+    "correta": "São Domingos de Gusmão"
+  },
+  {
+    "pergunta": "Qual o nome do santo que escreveu o 'Tratado da Verdadeira Devoção à Santíssima Virgem'?",
+    "alternativas": ["São Luís Maria Grignion de Montfort", "Santo Afonso de Ligório", "São Bernardo de Claraval", "São João Bosco"],
+    "correta": "São Luís Maria Grignion de Montfort"
+  },
+  {
+    "pergunta": "Quem foi São Bernardo de Claraval?",
+    "alternativas": ["Reformador cisterciense e grande místico medieval", "Um papa do século XII", "Um mártir africano", "Fundador dos jesuítas"],
+    "correta": "Reformador cisterciense e grande místico medieval"
+  },
+  {
+    "pergunta": "O que é 'catecumenato'?",
+    "alternativas": ["Processo de preparação para o Batismo", "O estudo da Bíblia", "A confirmação dos adultos", "A ordenação sacerdotal"],
+    "correta": "Processo de preparação para o Batismo"
+  },
+  {
+    "pergunta": "O que é um sínodo dos bispos?",
+    "alternativas": ["Assembleia consultiva convocada pelo Papa", "Um concílio ecumênico", "Uma reunião de cardeais", "Uma conferência episcopal nacional"],
+    "correta": "Assembleia consultiva convocada pelo Papa"
+  },
+  {
+    "pergunta": "O que é o 'tesouro da Igreja' relacionado às indulgências?",
+    "alternativas": ["Os méritos de Cristo, Maria e os santos", "As doações dos fiéis", "As relíquias dos santos", "Os bens materiais da Santa Sé"],
+    "correta": "Os méritos de Cristo, Maria e os santos"
+  },
+  {
+    "pergunta": "Qual santo foi proclamado Doutor da Eucaristia?",
+    "alternativas": ["São Pedro Julião Eymard", "São Tomás de Aquino", "Santo Afonso de Ligório", "São Francisco de Assis"],
+    "correta": "São Pedro Julião Eymard"
+  },
+  {
+    "pergunta": "Quem combateu a heresia ariana?",
+    "alternativas": ["Santo Atanásio", "Santo Agostinho", "São Jerônimo", "São Gregório Magno"],
+    "correta": "Santo Atanásio"
+  },
+  {
+    "pergunta": "Quem escreveu 'Subida do Monte Carmelo'?",
+    "alternativas": ["São João da Cruz", "Santa Teresa de Ávila", "Santo Inácio de Loyola", "São Francisco de Sales"],
+    "correta": "São João da Cruz"
+  },
+  {
+    "pergunta": "Qual é o livro mais citado no Novo Testamento?",
+    "alternativas": ["Salmos", "Gênesis", "Isaías", "Êxodo"],
+    "correta": "Salmos"
+  },
+{
+    "pergunta": "O que é o 'ofício divino'?",
+    "alternativas": ["Liturgia das Horas (oração pública da Igreja)", "A missa dominical", "O rosário", "As vésperas solenes"],
+    "correta": "Liturgia das Horas (oração pública da Igreja)"
+  },
+  {
+    "pergunta": "Quem foi Santa Hildegarda de Bingen?",
+    "alternativas": ["Mística, compositora e doutora da Igreja", "Uma rainha santa", "Fundadora das clarissas", "Mártir romana"],
+    "correta": "Mística, compositora e doutora da Igreja"
+  },
+  {
+    "pergunta": "O que é o 'Mistério da Redenção'?",
+    "alternativas": ["A salvação operada por Cristo na cruz", "A encarnação do Verbo", "A ressurreição dos mortos", "O juízo final"],
+    "correta": "A salvação operada por Cristo na cruz"
+  },
+  {
+    "pergunta": "Quem foi Santo Anselmo de Cantuária?",
+    "alternativas": ["Teólogo medieval, autor do argumento ontológico", "Um papa do século XI", "Fundador dos cartuxos", "Um mártir inglês"],
+    "correta": "Teólogo medieval, autor do argumento ontológico"
+  },
+  {
+    "pergunta": "O que é o 'limbo'?",
+    "alternativas": ["Estado teológico hipotético para almas não batizadas", "O purgatório", "O céu das crianças", "O inferno dos justos"],
+    "correta": "Estado teológico hipotético para almas não batizadas"
+  },
+  {
+    "pergunta": "Quem foi São Boaventura?",
+    "alternativas": ["Teólogo franciscano e doutor da Igreja", "Um papa do século XIII", "Fundador dos dominicanos", "Bispo de Hipona"],
+    "correta": "Teólogo franciscano e doutor da Igreja"
+  },
+  {
+    "pergunta": "O que é a 'co-redentora'?",
+    "alternativas": ["Título dado à participação especial de Maria na Redenção", "Um nome para a Igreja", "Um título cristológico", "Um conceito trinitário"],
+    "correta": "Título dado à participação especial de Maria na Redenção"
+  },
+  {
+    "pergunta": "O que são os 'atos humanos' e 'atos do homem' na moral?",
+    "alternativas": ["Humanos: conscientes e livres; do homem: involuntários", "Humanos: naturais; do homem: sobrenaturais", "Humanos: pecaminosos; do homem: virtuosos", "Humanos: individuais; do homem: coletivos"],
+    "correta": "Humanos: conscientes e livres; do homem: involuntários"
+  },
+  {
+    "pergunta": "O que é a 'teologia moral'?",
+    "alternativas": ["Estudo das ações humanas à luz da fé cristã", "O estudo dos dogmas", "A reflexão sobre os sacramentos", "A teologia sobre os anjos"],
+    "correta": "Estudo das ações humanas à luz da fé cristã"
+  },
+  {
+    "pergunta": "Quem escreveu a carta 'Deus Caritas Est'?",
+    "alternativas": ["Papa Bento XVI", "Papa João Paulo II", "Papa Francisco", "Papa Paulo VI"],
+    "correta": "Papa Bento XVI"
+  },
+{
+    "pergunta": "O que é a 'fé teologal'?",
+    "alternativas": [
+      "Virtude sobrenatural que nos faz crer em Deus",
+      "Conhecimento racional sobre Deus",
+      "Experiência mística pessoal",
+      "Tradição transmitida pelos apóstolos"
+    ],
+    "correta": "Virtude sobrenatural que nos faz crer em Deus"
+  },
+  {
+    "pergunta": "Quem foi Santa Teresa Benedita da Cruz?",
+    "alternativas": [
+      "Edith Stein, filósofa convertida e mártir",
+      "Uma freira franciscana do século XV",
+      "Fundadora das Carmelitas Descalças",
+      "Rainha medieval que se tornou santa"
+    ],
+    "correta": "Edith Stein, filósofa convertida e mártir"
+  },
+  {
+    "pergunta": "Quem é conhecido como 'doutor da graça'?",
+    "alternativas": [
+      "Santo Agostinho",
+      "São Tomás de Aquino",
+      "São Jerônimo",
+      "Santo Ambrósio"
+    ],
+    "correta": "Santo Agostinho"
+  },
+  {
+    "pergunta": "O que é a 'justificação' na teologia católica?",
+    "alternativas": [
+      "Ato de Deus que nos torna justos pela graça",
+      "Processo de autoaperfeiçoamento moral",
+      "Reconhecimento público da fé",
+      "Penitência pelos pecados cometidos"
+    ],
+    "correta": "Ato de Deus que nos torna justos pela graça"
+  },
+  {
+    "pergunta": "Quem são os quatro evangelistas e seus símbolos?",
+    "alternativas": [
+      "Mateus (anjo), Marcos (leão), Lucas (touro), João (águia)",
+      "Mateus (leão), Marcos (touro), Lucas (águia), João (anjo)",
+      "Mateus (águia), Marcos (anjo), Lucas (leão), João (touro)",
+      "Mateus (touro), Marcos (águia), Lucas (anjo), João (leão)"
+    ],
+    "correta": "Mateus (anjo), Marcos (leão), Lucas (touro), João (águia)"
+  },
+  {
+    "pergunta": "Quem escreveu 'A Regra' para monges beneditinos?",
+    "alternativas": [
+      "São Bento de Núrsia",
+      "São Francisco de Assis",
+      "Santo Inácio de Loyola",
+      "São Bernardo de Claraval"
+    ],
+    "correta": "São Bento de Núrsia"
+  },
+  {
+    "pergunta": "Qual documento papal condenou o modernismo?",
+    "alternativas": [
+      "Pascendi Dominici Gregis (Pio X)",
+      "Rerum Novarum (Leão XIII)",
+      "Humani Generis (Pio XII)",
+      "Lumen Gentium (Vaticano II)"
+    ],
+    "correta": "Pascendi Dominici Gregis (Pio X)"
+  },
+  {
+    "pergunta": "Quem é considerado o fundador da teologia escolástica?",
+    "alternativas": [
+      "Santo Anselmo",
+      "São Boaventura",
+      "Pedro Lombardo",
+      "Santo Alberto Magno"
+    ],
+    "correta": "Santo Anselmo"
+  },
+  {
+    "pergunta": "O que é a 'parusia'?",
+    "alternativas": [
+      "Segunda vinda de Cristo",
+      "Descida de Cristo ao inferno",
+      "Assunção de Maria",
+      "Juízo particular após a morte"
+    ],
+    "correta": "Segunda vinda de Cristo"
+  },
+  {
+    "pergunta": "Quem foi São Justino Mártir?",
+    "alternativas": [
+      "Filósofo e apologista cristão do século II",
+      "Um dos doze apóstolos",
+      "Papa do século IV",
+      "Bispo de Hipona"
+    ],
+    "correta": "Filósofo e apologista cristão do século II"
+  },
+  {
+    "pergunta": "O que é o 'ordo' na liturgia?",
+    "alternativas": [
+      "Ordem litúrgica das celebrações",
+      "Livro de cânticos gregorianos",
+      "Vestimenta sacerdotal",
+      "Bênção final da missa"
+    ],
+    "correta": "Ordem litúrgica das celebrações"
+  },
+  {
+    "pergunta": "O que é a 'matéria e forma' de um sacramento?",
+    "alternativas": [
+      "Elemento físico (matéria) e palavras (forma)",
+      "Preparação e celebração",
+      "Símbolo e significado",
+      "Ministro e recipiente"
+    ],
+    "correta": "Elemento físico (matéria) e palavras (forma)"
+  },
+  {
+    "pergunta": "O que é o 'Sacrário'?",
+    "alternativas": [
+      "Local onde se guarda a Eucaristia",
+      "Livro dos evangelhos",
+      "Pia batismal",
+      "Altar principal"
+    ],
+    "correta": "Local onde se guarda a Eucaristia"
+  },
+  {
+    "pergunta": "Qual santo introduziu a festa de Corpus Christi?",
+    "alternativas": [
+      "São Tomás de Aquino, por inspiração de Santa Juliana",
+      "São Francisco de Assis",
+      "Santo Inácio de Loyola",
+      "São Domingos de Gusmão"
+    ],
+    "correta": "São Tomás de Aquino, por inspiração de Santa Juliana"
+  },
+  {
+    "pergunta": "Quem foi São Vicente de Paulo?",
+    "alternativas": [
+      "Apóstolo da caridade, fundador da Congregação da Missão",
+      "Padre Pio do século XVII",
+      "Missionário jesuíta na América",
+      "Bispo de Milão"
+    ],
+    "correta": "Apóstolo da caridade, fundador da Congregação da Missão"
+  },
+  {
+    "pergunta": "O que é o 'rito romano'?",
+    "alternativas": [
+      "Rito litúrgico usado pela maioria dos católicos",
+      "Celebração exclusiva do Papa",
+      "Missa em latim tradicional",
+      "Liturgia dos primeiros cristãos"
+    ],
+    "correta": "Rito litúrgico usado pela maioria dos católicos"
+  },
+  {
+    "pergunta": "Qual é o sentido bíblico de 'aliança'?",
+    "alternativas": [
+      "Compromisso solene entre Deus e o povo",
+      "Promessa humana a Deus",
+      "Contrato entre nações",
+      "Juramento de fidelidade"
+    ],
+    "correta": "Compromisso solene entre Deus e o povo"
+  },
+  {
+    "pergunta": "O que é 'heresias cristológicas'?",
+    "alternativas": [
+      "Erros sobre a natureza divina e humana de Cristo",
+      "Negação da Santíssima Trindade",
+      "Rejeição dos sacramentos",
+      "Interpretações alternativas da Bíblia"
+    ],
+    "correta": "Erros sobre a natureza divina e humana de Cristo"
+  },
+  {
+    "pergunta": "Quem é o autor do 'Credo Atanasiano'?",
+    "alternativas": [
+      "Atribuído a Santo Atanásio (ou seus discípulos)",
+      "São Jerônimo",
+      "Santo Agostinho",
+      "São Cirilo de Alexandria"
+    ],
+    "correta": "Atribuído a Santo Atanásio (ou seus discípulos)"
+  },
+  {
+    "pergunta": "Qual Papa foi o primeiro a visitar a Terra Santa?",
+    "alternativas": [
+      "Paulo VI",
+      "João XXIII",
+      "Pio XII",
+      "João Paulo II"
+    ],
+    "correta": "Paulo VI"
+  },
+  {
+    "pergunta": "Quem foi Santa Catarina de Sena?",
+    "alternativas": [
+      "Mística e doutora da Igreja; influenciou o papado",
+      "Rainha da Itália medieval",
+      "Fundadora das Clarissas",
+      "Mártir das catacumbas"
+    ],
+    "correta": "Mística e doutora da Igreja; influenciou o papado"
+  },
+  {
+    "pergunta": "O que é a 'infusão da graça'?",
+    "alternativas": [
+      "Ação de Deus que comunica sua vida ao ser humano",
+      "Batismo por imersão",
+      "Unção dos enfermos",
+      "Revelação divina pessoal"
+    ],
+    "correta": "Ação de Deus que comunica sua vida ao ser humano"
+  },
+  {
+    "pergunta": "Quem escreveu 'Jesus de Nazaré' em três volumes?",
+    "alternativas": [
+      "Papa Bento XVI",
+      "São João Paulo II",
+      "Cardeal Ratzinger antes de ser Papa",
+      "Hans Urs von Balthasar"
+    ],
+    "correta": "Papa Bento XVI"
+  },
+  {
+    "pergunta": "Qual é a finalidade última da vida cristã?",
+    "alternativas": [
+      "A união com Deus na eternidade (visão beatífica)",
+      "A santificação do mundo",
+      "A imitação perfeita de Cristo",
+      "A construção do Reino de Deus na terra"
+    ],
+    "correta": "A união com Deus na eternidade (visão beatífica)"
+  },
+  {
+    "pergunta": "Segundo o CIC (§1213), o Batismo é a porta que abre o acesso a quê?",
+    "alternativas": [
+      "Ao céu diretamente, sem mais nada",
+      "Aos outros sacramentos",
+      "Aos cargos públicos",
+      "Às riquezas do mundo"
+    ],
+    "correta": "Aos outros sacramentos"
+  },
+  {
+    "pergunta": "O texto de Lucas 4:18 ('O Espírito do Senhor está sobre mim...') citado refere-se à unção de Jesus para qual tríplice função?",
+    "alternativas": [
+      "Juiz, guerreiro e poeta",
+      "Sacerdote, profeta e rei",
+      "Médico, advogado e engenheiro",
+      "Líder, sábio e artista"
+    ],
+    "correta": "Sacerdote, profeta e rei"
+  },
+  {
+    "pergunta": "Segundo o CIC (§1241), a unção com o santo crisma significa especificamente o dom do quê ao neobatizado?",
+    "alternativas": [
+      "Dom da línguas",
+      "Dom da cura",
+      "Dom do Espírito Santo",
+      "Dom da profecia"
+    ],
+    "correta": "Dom do Espírito Santo"
+  },
+  {
+    "pergunta": "A expressão 'nascer da água e do Espírito' (Jo 3:5) refere-se diretamente a qual sacramento?",
+    "alternativas": [
+      "Eucaristia",
+      "Confirmação (Crisma)",
+      "Batismo",
+      "Penitência (Reconciliação)"
+    ],
+    "correta": "Batismo"
+  },
+  {
+    "pergunta": "Segundo o texto, ser 'regenerados como filhos de Deus' (CIC §1213) pelo Batismo implica em:",
+    "alternativas": [
+      "Uma mudança apenas simbólica",
+      "Uma realidade ontológica (do ser) e espiritual nova",
+      "A perda da liberdade individual",
+      "A garantia automática da salvação sem esforço"
+    ],
+    "correta": "Uma realidade ontológica (do ser) e espiritual nova"
+  },
+  {
+    "pergunta": "O compromisso de 'viver como Cristo viveu' (citado na parte sobre Missão) implica principalmente em:",
+    "alternativas": [
+      "Copiar seus gestos externos literalmente",
+      "Adotar seu estilo de vida material",
+      "Assimilar seus valores, amor, serviço e obediência ao Pai",
+      "Viver exatamente no mesmo lugar e época"
+    ],
+    "correta": "Assimilar seus valores, amor, serviço e obediência ao Pai"
+  },
+  {
+    "pergunta": "Quando o texto diz que o batizado é chamado a 'comprometer-se com a transformação do mundo à luz do Evangelho', isso se refere à dimensão:",
+    "alternativas": [
+      "Puramente individual e privada da fé",
+      "Social e política da fé, buscando justiça e caridade",
+      "Econômica de acumulação de bens",
+      "Estética de embelezar o mundo"
+    ],
+    "correta": "Social e política da fé, buscando justiça e caridade"
+  },
+  {
+    "pergunta": "A referência ao CIC §1242-1245, associada à unção, enfatiza que o batizado é chamado a uma vida:",
+    "alternativas": [
+      "De relaxamento e inatividade",
+      "Santa e comprometida com a edificação do Reino de Deus",
+      "De experimentação de todos os prazeres",
+      "Centrada apenas na oração individual"
+    ],
+    "correta": "Santa e comprometida com a edificação do Reino de Deus"
+  },
+  {
+    "pergunta": "O Batismo de Jesus no Jordão (mencionado no segundo objetivo) é visto teologicamente como:",
+    "alternativas": [
+      "Um ato necessário para que Jesus fosse salvo",
+      "Uma manifestação pública da Trindade e uma prefiguração do nosso batismo",
+      "Um erro de Jesus",
+      "Um rito de passagem comum aos judeus da época, sem significado especial"
+    ],
+    "correta": "Uma manifestação pública da Trindade e uma prefiguração do nosso batismo"
+  },
+  {
+    "pergunta": "A afirmação 'Ser batizado é assumir uma vocação ativa' significa que:",
+    "alternativas": [
+      "O Batismo é um passaporte para o céu sem responsabilidades",
+      "A fé batismal exige uma resposta contínua e ativa em discipulado e missão",
+      "O batizado deve obrigatoriamente ser padre ou freira",
+      "A vida espiritual pode ficar passiva após o Batismo"
+    ],
+    "correta": "A fé batismal exige uma resposta contínua e ativa em discipulado e missão"
+  }
+]
+};
+
+let usadas = {
+  facil: [],
+  medio: [],
+  dificil: []
+};
+
+document.getElementById("startBtn").addEventListener("click", () => {
+  document.getElementById("difficultyButtons").classList.remove("hidden");
+  document.getElementById("startBtn").classList.add("hidden");
+});
+
+function showQuestion(nivel) {
+  const restantes = perguntas[nivel].filter((_, i) => !usadas[nivel].includes(i));
+  
+  if (restantes.length === 0) {
+    alert("Você já respondeu todas as perguntas desse nível!");
+    return;
+  }
+
+  const idx = Math.floor(Math.random() * restantes.length);
+  const pergunta = restantes[idx];
+  const indexReal = perguntas[nivel].indexOf(pergunta);
+  usadas[nivel].push(indexReal);
+
+  document.getElementById("questionText").textContent = pergunta.pergunta;
+
+  const answersList = document.getElementById("answersList");
+  answersList.innerHTML = "";
+  pergunta.alternativas.forEach((alt) => {
+    const li = document.createElement("li");
+    li.textContent = alt;
+    if (alt === pergunta.correta) {
+      li.style.fontWeight = "bold";
+      li.style.color = "#62db5c";
+    }
+    answersList.appendChild(li);
+  });
+
+  document.getElementById("questionContainer").classList.remove("hidden");
+  document.getElementById("nextButtons").classList.remove("hidden");
+}
+
+</script>
+</html>

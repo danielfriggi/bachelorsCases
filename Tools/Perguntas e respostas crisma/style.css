@@ -1,0 +1,41 @@
+body {
+  font-family: Arial, sans-serif;
+  background: rgb(31, 30, 30);
+  padding: 20px;
+  text-align: center;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: rgb(129, 126, 126);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background: beige;
+  border-radius: 10px;
+  border: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+  padding: 10px;
+  background: #4e4b4b;
+  border-radius: 4px;
+  color: beige;
+}
+

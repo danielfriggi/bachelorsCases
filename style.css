@@ -30,6 +30,7 @@
       gap: 40px;
       flex-wrap: wrap;
       justify-content: center;
+      flex-direction: column;
     }
     .column {
       background: rgb(177, 175, 175);
@@ -81,12 +82,9 @@
       font-size: 1em;
       line-height: 1.5;
     }
-    @media (max-width: 650px) {
+    @media (min-width: 650px) {
       .container {
-        flex-direction: column;
+        flex-direction: row;
         gap: 25px;
-      }
-      .column {
-        min-width: 100%;
       }
     }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Organizador de APIs</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Organizador de APIs</h1>
+
+  <input type="file" id="fileInput" accept=".json" />
+  <label for="groupBy">Agrupar por:</label>
+  <select id="groupBy">
+    <option value="none">Nenhum agrupamento</option>
+    <option value="host">Domínio</option>
+    <option value="method">Método</option>
+    <option value="name">Nome</option>
+    <option value="unique">Únicas / Duplicadas</option>
+    
+  </select>
+    <button id="btnProcessar">Processar</button>
+    <button id="btnExportar">Exportar CSV</button>
+
+  <br />
+  <label for="search">Busca: </label>
+  <input type="text" id="search"placeholder="Digite aqui" />
+
+  <div id="resultado"></div>
+
+  <!-- Modal -->
+  <div id="modalRetorno" class="hidden">
+    <div>
+      <button class="close-btn" id="btnFecharModal">X</button>
+      <pre id="modalContent"></pre>
+    </div>
+  </div>
+
+   <script type="module" src="script.js"></script>
+</body>
+</html>

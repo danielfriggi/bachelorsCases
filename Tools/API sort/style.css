@@ -58,4 +58,10 @@
     .duplicated {
       background-color: #fff9c4; 
     }
+       .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
 

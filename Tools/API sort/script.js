@@ -75,13 +75,13 @@
               <table class="api-table" id="table-${grupo}">
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th>Nome</th>
-                    <th style="cursor:pointer" onclick="ordenarTabela('${grupo}', 3)">Método ⬍</th>
-                    <th>URL</th>
-                    <th>Duplicado</th>
-                    <th style="cursor:pointer" onclick="ordenarTabela('${grupo}', 5)">Tamanho ⬍</th>
-                    <th>Retorno</th>
+                  <th>#</th>
+<th>Nome</th>
+<th class="sortable" style="cursor:pointer">Método ⬍</th>
+<th>URL</th>
+<th>Duplicado</th>
+<th class="sortable" style="cursor:pointer">Tamanho ⬍</th>
+<th>Retorno</th>
                   </tr>
                 </thead>
                 <tbody id="tbody-${grupo}">
@@ -103,6 +103,13 @@
                 </tbody>
               </table>
             `;
+            document.querySelectorAll('.api-table thead th.sortable').forEach(th => {
+            th.addEventListener('click', () => {
+              const grupo = th.closest('table').id.replace('table-', '');
+              const colIndex = Array.from(th.parentNode.children).indexOf(th);
+              ordenarTabela(grupo, colIndex);
+            });
+          });
 
             apisGrupo.forEach((api, i) => {
               fetch(api.url, { method: api.method }).then(async res => {
@@ -236,7 +243,9 @@
 
       rows.forEach(row => tbody.appendChild(row));
 
-      document.getElementById('resultado').addEventListener('click', (e) => {
+
+    }
+          document.getElementById('resultado').addEventListener('click', (e) => {
   const collapseEl = e.target.closest('.grupo-title');
   if (collapseEl) {
     const grupo = collapseEl.getAttribute('data-grupo');
@@ -250,4 +259,3 @@
     abrirModal(index, grupo);
   }
 });
-    }

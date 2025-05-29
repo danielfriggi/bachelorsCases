@@ -4,9 +4,28 @@
   <meta charset="UTF-8" />
   <title>Organizador de APIs</title>
   <link rel="stylesheet" href="style.css" />
+
+   <script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'pt',
+      includedLanguages: 'pt,en,fr,de,it,ru',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+</script>
+
+<script type="text/javascript" 
+  src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
 </head>
 <body>
+ <div class="header-container">
   <h1>Organizador de APIs</h1>
+  <div id="google_translate_element">
+    Idioma:
+  </div>
+</div>
 
   <input type="file" id="fileInput" accept=".json" />
   <label for="groupBy">Agrupar por:</label>

@@ -29,6 +29,12 @@ button {
   background: beige;
   border-radius: 10px;
   border: 0;
+  transition: background-color 0.3s, transform 0.2s;
+}
+button:hover {
+  background-color: #e0d4b7;
+  transform: scale(1.05);
+  cursor: pointer;
 }
 
 .hidden {
@@ -45,9 +51,50 @@ li {
   padding: 10px;
   background: #4e4b4b;
   border-radius: 4px;
-  color: beige;
+  color: #f5f5dc;
+  transition: background-color 0.3s, transform 0.2s;
+}
+li:hover {
+  background-color: #e4e495;
+  transform: scale(1.03);
+  cursor: pointer;
 }
 
+#questionContainer.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#questionContainer {
+  opacity: 1;
+  transform: translateY(0);
+}
+#difficultyButtons.hidden {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#difficultyButtons {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.container {
+  animation: fadeSlideIn 0.8s ease forwards;
+}
+
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>
 <body>
   <div class="container">

@@ -1433,5 +1433,105 @@ export default [
       "Glória"
     ],
     "correta": "Credo"
+  },
+  {
+    "pergunta": "Qual foi a cidade italiana onde ocorreu o Milagre de Bolsena?",
+    "alternativas": [
+      "Assis",
+      "Florença",
+      "Bolsena",
+      "Roma"
+    ],
+    "correta": "Bolsena"
+  },
+  {
+    "pergunta": "Quem estava em Orvieto e mandou buscar o corporal milagroso?",
+    "alternativas": [
+      "Papa Francisco",
+      "Papa Urbano IV",
+      "São Tomás de Aquino",
+      "Santa Juliana"
+    ],
+    "correta": "Papa Urbano IV"
+  },
+  {
+    "pergunta": "Qual documento oficializou a festa de Corpus Christi?",
+    "alternativas": [
+      "Encíclica Dominus Iesus",
+      "Bula Transiturus de hoc mundo",
+      "Concílio Vaticano II",
+      "Código de Direito Canônico"
+    ],
+    "correta": "Bula Transiturus de hoc mundo"
+  },
+  {
+    "pergunta": "A transubstanciação representa:",
+    "alternativas": [
+      "A presença simbólica de Cristo na Eucaristia",
+      "A mudança de aparência da hóstia",
+      "A transformação do pão e vinho em Corpo e Sangue de Cristo",
+      "Um milagre exclusivo da missa de Corpus Christi"
+    ],
+    "correta": "A transformação do pão e vinho em Corpo e Sangue de Cristo"
+  },
+  {
+    "pergunta": "Quando foi o primeiro registro da celebração de Corpus Christi no Brasil?",
+    "alternativas": [
+      "1822",
+      "1549",
+      "1700",
+      "1889"
+    ],
+    "correta": "1549"
+  },
+  {
+    "pergunta": "Qual era a função litúrgica de São Tomás de Aquino na festa?",
+    "alternativas": [
+      "Organizar procissões",
+      "Redigir textos litúrgicos",
+      "Construir igrejas",
+      "Administrar sacramentos"
+    ],
+    "correta": "Redigir textos litúrgicos"
+  },
+  {
+    "pergunta": "Quem foi Jacques Pantaléon antes de se tornar Papa?",
+    "alternativas": [
+      "Arcebispo de Paris",
+      "Frade dominicano",
+      "Arcediago",
+      "Imperador Romano"
+    ],
+    "correta": "Arcediago"
+  },
+  {
+    "pergunta": "Que veste litúrgica cobre os ombros do sacerdote na procissão?",
+    "alternativas": [
+      "Casula",
+      "Estola",
+      "Humeral",
+      "Alva"
+    ],
+    "correta": "Humeral"
+  },
+  {
+    "pergunta": "O que simboliza a confecção dos tapetes para a procissão?",
+    "alternativas": [
+      "Um símbolo do tempo litúrgico",
+      "Um enfeite para o caminho da missa",
+      "A adoração ao Cristo Eucarístico com arte",
+      "Uma tradição secular portuguesa"
+    ],
+    "correta": "A adoração ao Cristo Eucarístico com arte"
+  },
+  {
+    "pergunta": "Quantos dias após a Páscoa é celebrada Corpus Christi?",
+    "alternativas": [
+      "50 dias",
+      "40 dias",
+      "60 dias",
+      "30 dias"
+    ],
+    "correta": "60 dias"
   }
 ]

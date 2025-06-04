@@ -918,5 +918,105 @@ export default [
     "Segunda-feira"
   ],
   "correta": "Domingo"
-}
+},
+{
+    "pergunta": "O que significa a expressão 'Corpus Christi'?",
+    "alternativas": [
+      "Sangue de Cristo",
+      "Festa dos Apóstolos",
+      "Corpo de Cristo",
+      "Domingo da Páscoa"
+    ],
+    "correta": "Corpo de Cristo"
+  },
+  {
+    "pergunta": "Quem oficializou a festa de Corpus Christi?",
+    "alternativas": [
+      "Papa João Paulo II",
+      "Papa Francisco",
+      "Papa Urbano IV",
+      "Papa Bento XVI"
+    ],
+    "correta": "Papa Urbano IV"
+  },
+  {
+    "pergunta": "Em qual país viveu Santa Juliana de Cornillon?",
+    "alternativas": [
+      "França",
+      "Itália",
+      "Bélgica",
+      "Espanha"
+    ],
+    "correta": "Bélgica"
+  },
+  {
+    "pergunta": "Em que dia da semana Corpus Christi é celebrado?",
+    "alternativas": [
+      "Segunda-feira",
+      "Quarta-feira",
+      "Quinta-feira",
+      "Domingo"
+    ],
+    "correta": "Quinta-feira"
+  },
+  {
+    "pergunta": "Qual o nome do sacerdote que presenciou o milagre de Bolsena?",
+    "alternativas": [
+      "Tomé de Sousa",
+      "Pedro de Praga",
+      "Jacques Pantaléon",
+      "Tomás de Aquino"
+    ],
+    "correta": "Pedro de Praga"
+  },
+  {
+    "pergunta": "Que elemento da liturgia contém a hóstia consagrada na procissão?",
+    "alternativas": [
+      "Turíbulo",
+      "Cálice",
+      "Ostensório",
+      "Cibório"
+    ],
+    "correta": "Ostensório"
+  },
+  {
+    "pergunta": "Que figura compôs os hinos litúrgicos da festa de Corpus Christi?",
+    "alternativas": [
+      "São Bento",
+      "Santo Agostinho",
+      "São Tomás de Aquino",
+      "São Francisco de Assis"
+    ],
+    "correta": "São Tomás de Aquino"
+  },
+  {
+    "pergunta": "Qual é uma das expressões artísticas mais conhecidas de Corpus Christi no Brasil?",
+    "alternativas": [
+      "Procissão de velas",
+      "Tapetes coloridos",
+      "Teatro de rua",
+      "Desenhos infantis"
+    ],
+    "correta": "Tapetes coloridos"
+  },
+  {
+    "pergunta": "O que é usado para confeccionar os tapetes de Corpus Christi?",
+    "alternativas": [
+      "Concreto e gesso",
+      "Lonas plásticas",
+      "Serragem, sal e flores",
+      "Pedras e mármore"
+    ],
+    "correta": "Serragem, sal e flores"
+  },
+  {
+    "pergunta": "O que representa a procissão de Corpus Christi?",
+    "alternativas": [
+      "A entrada de Jesus em Jerusalém",
+      "A ressurreição de Cristo",
+      "Cristo caminhando com seu povo",
+      "A celebração do Natal"
+    ],
+    "correta": "Cristo caminhando com seu povo"
+  }
 ]

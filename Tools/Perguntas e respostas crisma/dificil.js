@@ -968,5 +968,105 @@ export default [
       "A vida espiritual pode ficar passiva após o Batismo"
     ],
     "correta": "A fé batismal exige uma resposta contínua e ativa em discipulado e missão"
+  },
+  {
+    "pergunta": "Em que ano o Papa Urbano IV instituiu oficialmente a festa de Corpus Christi?",
+    "alternativas": [
+      "1263",
+      "1264",
+      "1300",
+      "1250"
+    ],
+    "correta": "1264"
+  },
+  {
+    "pergunta": "Quais são os hinos litúrgicos mais conhecidos compostos por São Tomás de Aquino para Corpus Christi?",
+    "alternativas": [
+      "Te Deum e Gloria",
+      "Agnus Dei e Kyrie",
+      "Tantum Ergo e Pange Lingua",
+      "Ave Maria e Salve Regina"
+    ],
+    "correta": "Tantum Ergo e Pange Lingua"
+  },
+  {
+    "pergunta": "Qual é o nome do pano litúrgico manchado pelo sangue da hóstia no milagre de Bolsena?",
+    "alternativas": [
+      "Estola",
+      "Corporal",
+      "Manípulo",
+      "Humeral"
+    ],
+    "correta": "Corporal"
+  },
+  {
+    "pergunta": "A celebração de Corpus Christi foi influenciada diretamente por qual milagre?",
+    "alternativas": [
+      "Milagre de Fátima",
+      "Milagre de Bolsena",
+      "Milagre de Guadalupe",
+      "Milagre de Lanciano"
+    ],
+    "correta": "Milagre de Bolsena"
+  },
+  {
+    "pergunta": "Qual é a única procissão da Igreja com o Santíssimo Sacramento exposto?",
+    "alternativas": [
+      "Procissão de Pentecostes",
+      "Procissão de Todos os Santos",
+      "Procissão de Corpus Christi",
+      "Procissão de Finados"
+    ],
+    "correta": "Procissão de Corpus Christi"
+  },
+  {
+    "pergunta": "Quantas procissões obrigatórias existem no calendário litúrgico?",
+    "alternativas": [
+      "Uma",
+      "Duas",
+      "Três",
+      "Nenhuma"
+    ],
+    "correta": "Duas"
+  },
+  {
+    "pergunta": "Quem acompanhou Tomé de Sousa na primeira celebração de Corpus Christi no Brasil?",
+    "alternativas": [
+      "Padre Anchieta",
+      "Padre Vieira",
+      "Padre Manuel da Nóbrega",
+      "Dom Pedro I"
+    ],
+    "correta": "Padre Manuel da Nóbrega"
+  },
+  {
+    "pergunta": "A presença real de Cristo na Eucaristia é afirmada por qual dogma?",
+    "alternativas": [
+      "Encarnação",
+      "Trindade",
+      "Transubstanciação",
+      "Imaculada Conceição"
+    ],
+    "correta": "Transubstanciação"
+  },
+  {
+    "pergunta": "Qual cidade italiana abriga hoje o corporal do milagre de Bolsena?",
+    "alternativas": [
+      "Roma",
+      "Assis",
+      "Orvieto",
+      "Nápoles"
+    ],
+    "correta": "Orvieto"
+  },
+  {
+    "pergunta": "Qual dessas funções também é associada à procissão de Corpus Christi?",
+    "alternativas": [
+      "Penitência dos fiéis",
+      "Pedido de bênçãos para o povo",
+      "Celebração dos mártires",
+      "Início da Quaresma"
+    ],
+    "correta": "Pedido de bênçãos para o povo"
   }
 ]

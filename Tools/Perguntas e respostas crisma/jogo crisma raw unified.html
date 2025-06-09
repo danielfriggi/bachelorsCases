@@ -13,6 +13,9 @@ body {
   padding: 20px;
   text-align: center;
 }
+h1{
+  margin-top: 0;
+}
 
 .container {
   max-width: 600px;
@@ -20,6 +23,41 @@ body {
   background: rgb(129, 126, 126);
   border-radius: 8px;
   padding: 20px;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+@media (max-width: 768px){
+  .modal{
+    top: 45%;
+  }
+}
+
+.modal-content {
+  background-color: #e0d4b7;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 400px;
+  position: relative;
+  text-align: center;
+  margin-top: 55%;
+}
+
+.close-modal {
+  position: absolute;
+  right: 1rem;
+  top: 0.5rem;
+  cursor: pointer;
+  font-size: 24px;
 }
 
 button {
@@ -84,6 +122,39 @@ li:hover {
 .container {
   animation: fadeSlideIn 0.8s ease forwards;
 }
+#howToPlayBtn {
+  align-self: flex-start;
+  margin-bottom: 10px;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#howToPlayBtn:hover {
+  background-color: #666;
+}
+#scoreBoard{
+  background-color: #e0d4b7;
+  width: fit-content;
+  margin: 0 auto;
+  border-radius: 15px;
+  padding: 10px;
+  margin-top: 15px;
+}
+#scoreBoard h3{
+  margin-top: 0;
+}
+
+
+
 
 @keyframes fadeSlideIn {
   0% {
@@ -95,26 +166,64 @@ li:hover {
     transform: translateY(0);
   }
 }
+
+
 </style>
 <body>
   <div class="container">
-    <h1>Jogo de Perguntas - Crisma</h1>
+    <div>
+      <button id="howToPlayBtn">?</button>
+    </div>
+    
+    <div id="modalInstrucoes" class="modal hidden">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Como Jogar</h2>
+        <p>Bem-vindo ao Jogo de Perguntas da Crisma!</p>
+
+        <p>Para começar, clique em <strong>“Iniciar Jogo”</strong> e escolha o nível de dificuldade desejado: <strong>Fácil</strong>, <strong>Médio</strong> ou <strong>Difícil</strong>.</p>
+
+        <p>Cada pergunta terá alternativas. Clique na que você acha correta. A resposta será destacada automaticamente.</p>
+
+        <p>Você pode <strong>pular perguntas</strong> clicando no botão de pular, sem que ela seja contabilizada como errada. Ela poderá aparecer novamente no futuro.</p>
+
+        <p>Durante o jogo, você verá um <strong>placar</strong> com a quantidade de acertos e erros, separados por nível de dificuldade.</p>
+
+        <p>O objetivo é aprender e se divertir. Boa sorte!</p>
+      </div>
+
+    </div>
+    <h1>Jogo de Perguntas - Crisma</h1>  
     <button id="startBtn">Iniciar Jogo</button>
 
     <div id="difficultyButtons" class="hidden">
       <button onclick="showQuestion('facil')">Fácil</button>
       <button onclick="showQuestion('medio')">Médio</button>
       <button onclick="showQuestion('dificil')">Difícil</button>
+      <button id="btnPular" class="hidden">Pular Pergunta</button>
+    </div>
+    <div id="scoreBoard" class="hidden">
+      <h3>Pontuação</h3>
+      <p>Fácil: <span id="acertosFacil">0</span> acertos / <span id="errosFacil">0</span> erros</p>
+      <p>Médio: <span id="acertosMedio">0</span> acertos / <span id="errosMedio">0</span> erros</p>
+      <p>Difícil: <span id="acertosDificil">0</span> acertos / <span id="errosDificil">0</span> erros</p>
     </div>
 
     <div id="questionContainer" class="hidden">
       <h2 id="questionText"></h2>
       <ul id="answersList"></ul>
+      
     </div>
+  </div>
 
 
 </body>
 <script>
+  let pontuacao = {
+  facil: { acertos: 0, erros: 0 },
+  medio: { acertos: 0, erros: 0 },
+  dificil: { acertos: 0, erros: 0 }
+};
 const perguntas = {
   facil: [
   {
@@ -3459,6 +3568,7 @@ let usadas = {
 document.getElementById("startBtn").addEventListener("click", () => {
   document.getElementById("difficultyButtons").classList.remove("hidden");
   document.getElementById("startBtn").classList.add("hidden");
+  document.getElementById("scoreBoard").classList.remove("hidden");
 });
 
 function showQuestion(nivel) {
@@ -3472,15 +3582,15 @@ function showQuestion(nivel) {
   const idx = Math.floor(Math.random() * restantes.length);
   const pergunta = restantes[idx];
   const indexReal = perguntas[nivel].indexOf(pergunta);
-  usadas[nivel].push(indexReal);
+  
 
   document.getElementById("questionText").textContent = pergunta.pergunta;
 
   const answersList = document.getElementById("answersList");
   answersList.innerHTML = "";
-  answersList.classList.remove("respondido"); // <- ESSA LINHA É A SOLUÇÃO
+  answersList.classList.remove("respondido");
 
-  // Embaralha as alternativas
+
   function shuffleArray(array) {
     return array
       .map(value => ({ value, sort: Math.random() }))
@@ -3494,7 +3604,7 @@ function showQuestion(nivel) {
     const li = document.createElement("li");
     li.textContent = alt;
     li.style.cursor = "pointer";
-    li.style.color = "white"; // cor padrão
+    li.style.color = "white"; 
 
     li.addEventListener("click", () => {
       if (answersList.classList.contains("respondido")) return;
@@ -3504,9 +3614,13 @@ function showQuestion(nivel) {
       if (alt === pergunta.correta) {
         li.style.color = "#62db5c";
         li.style.fontWeight = "bold";
+        pontuacao[nivel].acertos++;
+        usadas[nivel].push(indexReal);
       } else {
         li.style.color = "#db5c5c";
         li.style.fontWeight = "bold";
+        pontuacao[nivel].erros++;
+        usadas[nivel].push(indexReal);
 
         Array.from(answersList.children).forEach((item) => {
           if (item.textContent === pergunta.correta) {
@@ -3515,13 +3629,37 @@ function showQuestion(nivel) {
           }
         });
       }
+      atualizarPlacar();
     });
 
     answersList.appendChild(li);
   });
 
   document.getElementById("questionContainer").classList.remove("hidden");
+  document.getElementById("btnPular").classList.remove("hidden");
+  document.getElementById("btnPular").onclick = () => {
+    showQuestion(nivel); 
+  };
 }
+const modal = document.getElementById("modalInstrucoes");
+const btnHowToPlay = document.getElementById("howToPlayBtn");
+const closeModal = document.querySelector(".close-modal");
 
+btnHowToPlay.addEventListener("click", () => modal.classList.remove("hidden"));
+closeModal.addEventListener("click", () => modal.classList.add("hidden"));
+window.addEventListener("click", (e) => {
+  if (e.target === modal) modal.classList.add("hidden");
+});
+
+function atualizarPlacar() {
+  document.getElementById("acertosFacil").textContent = pontuacao.facil.acertos;
+  document.getElementById("errosFacil").textContent = pontuacao.facil.erros;
+
+  document.getElementById("acertosMedio").textContent = pontuacao.medio.acertos;
+  document.getElementById("errosMedio").textContent = pontuacao.medio.erros;
+
+  document.getElementById("acertosDificil").textContent = pontuacao.dificil.acertos;
+  document.getElementById("errosDificil").textContent = pontuacao.dificil.erros;
+}
 </script>
 </html>

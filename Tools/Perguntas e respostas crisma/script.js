@@ -2,6 +2,12 @@ import perguntasFacil from './facil.js';
 import perguntasMedio from './medio.js';
 import perguntasDificil from './dificil.js';
 
+let pontuacao = {
+  facil: { acertos: 0, erros: 0 },
+  medio: { acertos: 0, erros: 0 },
+  dificil: { acertos: 0, erros: 0 }
+};
+
 let perguntas = {
   facil: perguntasFacil,
   medio: perguntasMedio,
@@ -17,6 +23,7 @@ let usadas = {
 document.getElementById("startBtn").addEventListener("click", () => {
   document.getElementById("difficultyButtons").classList.remove("hidden");
   document.getElementById("startBtn").classList.add("hidden");
+  document.getElementById("scoreBoard").classList.remove("hidden");
 });
 
 document.getElementById("btnFacil").addEventListener("click", () => showQuestion('facil'));
@@ -34,7 +41,7 @@ function showQuestion(nivel) {
   const idx = Math.floor(Math.random() * restantes.length);
   const pergunta = restantes[idx];
   const indexReal = perguntas[nivel].indexOf(pergunta);
-  usadas[nivel].push(indexReal);
+ 
 
   document.getElementById("questionText").textContent = pergunta.pergunta;
 
@@ -66,9 +73,13 @@ function showQuestion(nivel) {
       if (alt === pergunta.correta) {
         li.style.color = "#62db5c";
         li.style.fontWeight = "bold";
+        pontuacao[nivel].acertos++;
+        usadas[nivel].push(indexReal);
       } else {
         li.style.color = "#db5c5c";
         li.style.fontWeight = "bold";
+        pontuacao[nivel].erros++;
+        usadas[nivel].push(indexReal);
 
         Array.from(answersList.children).forEach((item) => {
           if (item.textContent === pergunta.correta) {
@@ -77,11 +88,35 @@ function showQuestion(nivel) {
           }
         });
       }
+      atualizarPlacar();
     });
 
     answersList.appendChild(li);
   });
 
   document.getElementById("questionContainer").classList.remove("hidden");
+  document.getElementById("btnPular").classList.remove("hidden");
+  document.getElementById("btnPular").onclick = () => {
+    showQuestion(nivel); 
+  };
 }
+const modal = document.getElementById("modalInstrucoes");
+const btnHowToPlay = document.getElementById("howToPlayBtn");
+const closeModal = document.querySelector(".close-modal");
 
+btnHowToPlay.addEventListener("click", () => modal.classList.remove("hidden"));
+closeModal.addEventListener("click", () => modal.classList.add("hidden"));
+window.addEventListener("click", (e) => {
+  if (e.target === modal) modal.classList.add("hidden");
+});
+
+function atualizarPlacar() {
+  document.getElementById("acertosFacil").textContent = pontuacao.facil.acertos;
+  document.getElementById("errosFacil").textContent = pontuacao.facil.erros;
+
+  document.getElementById("acertosMedio").textContent = pontuacao.medio.acertos;
+  document.getElementById("errosMedio").textContent = pontuacao.medio.erros;
+
+  document.getElementById("acertosDificil").textContent = pontuacao.dificil.acertos;
+  document.getElementById("errosDificil").textContent = pontuacao.dificil.erros;
+}

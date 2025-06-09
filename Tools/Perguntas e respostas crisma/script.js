@@ -1,7 +1,8 @@
+
 import perguntasFacil from './facil.js';
 import perguntasMedio from './medio.js';
 import perguntasDificil from './dificil.js';
-
+document.addEventListener("DOMContentLoaded", () => {
 let pontuacao = {
   facil: { acertos: 0, erros: 0 },
   medio: { acertos: 0, erros: 0 },
@@ -120,3 +121,4 @@ function atualizarPlacar() {
   document.getElementById("acertosDificil").textContent = pontuacao.dificil.acertos;
   document.getElementById("errosDificil").textContent = pontuacao.dificil.erros;
 }
+});

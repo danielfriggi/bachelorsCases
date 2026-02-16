@@ -64,20 +64,26 @@ export default function QaCrisma() {
   }
 
   function responder(alt: string) {
-    if (!perguntaAtual || !nivelAtual || respondido) return
+  if (!perguntaAtual || !nivelAtual || respondido) return
 
-    const acertou = alt === perguntaAtual.correta
+  const acertou = alt === perguntaAtual.correta
 
-    setPontuacao(prev => ({
-      ...prev,
-      [nivelAtual]: {
-        acertos: prev[nivelAtual].acertos + (acertou ? 1 : 0),
-        erros: prev[nivelAtual].erros + (!acertou ? 1 : 0)
-      }
-    }))
+  setPontuacao(prev => ({
+    ...prev,
+    [nivelAtual]: {
+      acertos: prev[nivelAtual].acertos + (acertou ? 1 : 0),
+      erros: prev[nivelAtual].erros + (!acertou ? 1 : 0)
+    }
+  }))
 
-    setRespondido(true)
-  }
+  setUsadas(prev => ({
+    ...prev,
+    [nivelAtual]: [...prev[nivelAtual], perguntas[nivelAtual].indexOf(perguntaAtual)]
+  }))
+
+  setRespondido(true)
+}
+
 
   return (
     <div className="qacrisma">

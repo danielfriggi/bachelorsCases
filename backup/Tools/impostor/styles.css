@@ -1,0 +1,125 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 500px;
+    width: 100%;
+    background: #968766;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #1a2b4c;
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #1a2b4c;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+input[type="text"], select {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.primary-btn {
+    background-color: #1a2b4c;
+    color: #fff;
+    display: block;
+  text-align: center;
+  margin: 10px auto;
+}
+#impostorReveal{
+    color: #cc0000;
+    text-transform: uppercase;
+}
+
+.primary-btn:hover {
+    background-color: #005fa3;
+}
+
+.reset-btn {
+    background-color: #ff5555;
+    color: #fff;
+    display: block;
+  text-align: center;
+  margin: 10px auto;
+}
+
+.reset-btn:hover {
+    background-color: #cc0000;
+}
+
+#playerList {
+    list-style: decimal;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    color: #1a2b4c;
+    text-transform: capitalize;
+}
+
+#word {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px 0;
+    text-align: center;
+    text-transform: capitalize;
+    color: #1a2b4c;
+}
+
+#playerTurn {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+
+#endGame {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#timeLeft {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+}

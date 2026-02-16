@@ -1,0 +1,37 @@
+.header{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar {
+    width: 250px;
+    padding: 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .sidebar h2 {
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+  }
+  
+  .sidebar select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    background: white;
+    cursor: pointer;
+  }
+  
+  .sidebar select:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  }
+  

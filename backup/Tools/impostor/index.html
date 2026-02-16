@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impostor</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>Impostor</h1>
+
+    <div id="setup">
+        <h2>Cadastro de Jogadores</h2>
+
+        <div class="input-group">
+            <input type="text" id="playerName" placeholder="Nome do jogador">
+            <button onclick="addPlayer()">Adicionar</button>
+        </div>
+
+        <ul id="playerList"></ul>
+
+        <!-- Seleção de categoria -->
+        <div class="input-group">
+            <label for="category">Escolha uma categoria:</label>
+            <select id="category">
+                <option value="">Aleatório</option>
+                <option value="frutas">Frutas</option>
+                <option value="animais">Animais</option>
+                <option value="objetos">Objetos</option>
+                <option value="cores">Cores</option>
+                <option value="profissoes">Profissões</option>
+                <option value="esportes">Esportes</option>
+            </select>
+        </div>
+
+        <button class="primary-btn" onclick="startGame()">Iniciar jogo</button>
+    </div>
+
+    <div id="game" style="display:none;">
+        <h2 id="playerTurn"></h2>
+        <button id="revealWordBtn" onclick="revealWord()">Mostrar palavra</button>
+        <p id="word" style="display:none;"></p>
+        <button class="primary-btn" onclick="nextPlayer()">Próximo jogador</button>
+
+<div id="endGame" style="display:none;">
+    <p>Tempo: <span id="timeLeft">0</span> s</p>
+    <button id="revealImpostorBtn" class="primary-btn" onclick="revealImpostor()">Revelar Impostor</button>
+    <p id="impostorReveal"></p>
+</div>
+
+
+        <button class="reset-btn" onclick="resetGame()">Resetar jogo</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

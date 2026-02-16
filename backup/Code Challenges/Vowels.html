@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beautiful Substring Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    label {
+      font-size: 1.2rem;
+    }
+    input, button {
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h1>Beautiful Substring Checker</h1>
+  <label for="inputString">type a substring to check:</label>
+  <input type="text" id="inputString" placeholder="type here..." />
+  <button onclick="checkBeautifulSubstring()">Check</button>
+  <div id="output" class="result"></div>
+
+  <script>
+    function checkBeautifulSubstring() {
+      // Obtendo a string do usuário (Retrieve the user-provided string)
+      const input = document.getElementById("inputString").value;
+
+      // Inicializando variáveis para armazenar o comprimento máximo e o estado atual (Initialize variables)
+      let maxLength = 0; // Comprimento máximo encontrado (Maximum length found)
+      let currentLength = 0; // Comprimento atual da substring válida (Current length of valid substring)
+      let currentVowelIndex = 0; // Índice atual na sequência de vogais (Current index in vowel sequence)
+
+      const vowels = "aeiou"; // As vogais em ordem (The vowels in order)
+
+      // Iterando sobre cada caractere da string (Iterating over each character in the string)
+      for (let i = 0; i < input.length; i++) {
+        const char = input[i];
+
+        // Verifica se o caractere corresponde à vogal atual (Check if character matches current vowel)
+        if (char === vowels[currentVowelIndex]) {
+          currentLength++;
+        } 
+        // Move para a próxima vogal se aplicável (Move to the next vowel if applicable)
+        else if (
+          currentVowelIndex < vowels.length - 1 &&
+          char === vowels[currentVowelIndex + 1]
+        ) {
+          currentVowelIndex++;
+          currentLength++;
+        } 
+        // Reseta as variáveis se a sequência for quebrada (Reset variables if sequence is broken)
+        else {
+          if (currentVowelIndex === vowels.length - 1) {
+            maxLength = Math.max(maxLength, currentLength);
+          }
+          if (char === "a") {
+            currentLength = 1;
+            currentVowelIndex = 0;
+          } else {
+            currentLength = 0;
+            currentVowelIndex = 0;
+          }
+        }
+      }
+
+      // Verifica novamente no final para capturar a última substring válida (Final check for last valid substring)
+      if (currentVowelIndex === vowels.length - 1) {
+        maxLength = Math.max(maxLength, currentLength);
+      }
+
+      // Exibindo o comprimento da maior substring "beautiful" (Displaying the result)
+      const output = document.getElementById("output");
+      output.textContent =
+        maxLength > 0
+          ? `Length of the biggest 'beautiful' substring is: ${maxLength}`
+          : "None 'beautiful' substring found.";
+    }
+  </script>
+</body>
+</html>

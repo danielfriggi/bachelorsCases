@@ -1,0 +1,87 @@
+import { Link } from "react-router-dom";
+import "./Jogos.css";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
+
+function Jogos() {
+  const jogos = [
+    {
+      nome: "Perguntas e Respostas (Crisma)",
+      img: "src/assets/qa.gif",
+      descricao: "Jogo com várias perguntas e respostas de diferentes níveis, teste seu conhecimento!",
+      link: "/Jogos/QACrisma",
+    },
+    {
+      nome: "Impostor",
+      img: "src/assets/Imposter.gif",
+      descricao: "Para jogar com os amigos: o impostor clássico, onde todos sabem a palavra menos um. Será que você consegue descobrir quem é?",
+      link: "/Jogos/Impostor",
+    },
+    {
+      nome: "Sueca",
+      img: "src/assets/sueca.gif",
+      descricao: "Divirta-se com os amigos no clássico jogo de sueca, com vários modos diferentes. Apenas para maiores de 18 anos!",
+      link: "https://play.google.com/store/apps/details?id=com.danielfriggi.Sueca",
+    },
+    {
+      nome: "Em construção",
+      img: "src/assets/coming_soon.gif",
+      descricao: "...",
+      link: "#",
+    },
+  ];
+
+  return (
+    <div className="jogos">
+      <Header />
+
+      <main className="container">
+        <h2>Jogos</h2>
+        <p className="page-description">
+          Aqui você encontra todos os jogos que desenvolvi até o momento.
+          Cada card mostra uma prévia animada do jogo, e você pode abri-lo clicando no botão.
+        </p>
+
+        <div className="games-grid">
+          {jogos.map((jogo, index) => (
+            <article className="game-card" key={index}>
+              <div className="game-img">
+                <img src={jogo.img} alt={`Prévia do jogo ${jogo.nome}`} />
+              </div>
+              <h3>{jogo.nome}</h3>
+              <p>{jogo.descricao}</p>
+
+              {jogo.link !== "#" ? (
+                jogo.link.startsWith("http") ? (
+                  <a 
+                    href={jogo.link} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    aria-label={`Abrir jogo ${jogo.nome} em nova aba`}
+                  >
+                    <button className="game-btn">Abrir jogo</button>
+                  </a>
+                ) : (
+                  <Link 
+                    to={jogo.link} 
+                    aria-label={`Abrir jogo ${jogo.nome}`}
+                  >
+                    <button className="game-btn">Abrir jogo</button>
+                  </Link>
+                )
+              ) : (
+                <button className="game-btn" disabled aria-disabled="true">
+                  Em breve
+                </button>
+              )}
+            </article>
+          ))}
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
+
+export default Jogos;

@@ -1,0 +1,28 @@
+export const palavras = {
+  frutas: [
+    "maçã","banana","laranja","uva","manga",
+    "abacaxi","morango","pera","melancia","kiwi"
+  ],
+  animais: [
+    "cachorro","gato","elefante","leão","tigre",
+    "cavalo","vaca","coelho","pinguim","golfinho"
+  ],
+  objetos: [
+    "cadeira","mesa","caneta","livro","garrafa",
+    "celular","teclado","monitor","chave","lanterna"
+  ],
+  cores: [
+    "vermelho","azul","verde","amarelo","roxo",
+    "rosa","preto","branco","laranja","cinza"
+  ],
+  profissoes: [
+    "médico","engenheiro","professor","advogado","arquiteto",
+    "enfermeiro","piloto","cozinheiro","motorista","jornalista"
+  ],
+  esportes: [
+    "futebol","basquete","tênis","natação","voleibol",
+    "corrida","ginástica","surfe","boxe","ciclismo"
+  ]
+} as const
+
+export type Categoria = keyof typeof palavras

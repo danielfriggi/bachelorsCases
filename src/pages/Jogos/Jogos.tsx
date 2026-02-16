@@ -2,30 +2,34 @@ import { Link } from "react-router-dom";
 import "./Jogos.css";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import qa from "../../assets/qa.gif";
+import imposter from "../../assets/Imposter.gif";
+import sueca from "../../assets/sueca.gif";
+import cs from "../../assets/coming_soon.gif";
 
 function Jogos() {
   const jogos = [
     {
       nome: "Perguntas e Respostas (Crisma)",
-      img: "src/assets/qa.gif",
+      img: qa,
       descricao: "Jogo com várias perguntas e respostas de diferentes níveis, teste seu conhecimento!",
       link: "/Jogos/QACrisma",
     },
     {
       nome: "Impostor",
-      img: "src/assets/Imposter.gif",
+      img: imposter,
       descricao: "Para jogar com os amigos: o impostor clássico, onde todos sabem a palavra menos um. Será que você consegue descobrir quem é?",
       link: "/Jogos/Impostor",
     },
     {
       nome: "Sueca",
-      img: "src/assets/sueca.gif",
+      img: sueca,
       descricao: "Divirta-se com os amigos no clássico jogo de sueca, com vários modos diferentes. Apenas para maiores de 18 anos!",
       link: "https://play.google.com/store/apps/details?id=com.danielfriggi.Sueca",
     },
     {
       nome: "Em construção",
-      img: "src/assets/coming_soon.gif",
+      img: cs,
       descricao: "...",
       link: "#",
     },

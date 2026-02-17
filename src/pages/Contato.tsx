@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import emailjs from "emailjs-com";
 import "../styles/contato.css";
 import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
 
 export default function Contato() {
   const [nome, setNome] = useState("");
@@ -157,6 +158,7 @@ export default function Contato() {
           </div>
         </section>
       </main>
+      <Footer/>
     </div>
   );
 }

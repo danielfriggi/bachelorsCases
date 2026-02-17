@@ -4,7 +4,7 @@ import { recomendacoes } from "./recomendacoes";
 import "./Recomendations.scss";
 
 export default function RecomendacoesCarousel() {
-  const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
+  const [sliderRef] = useKeenSlider<HTMLDivElement>({
     mode: "snap",
     slides: { perView: 3, spacing: 20 },
     breakpoints: {
@@ -14,11 +14,10 @@ export default function RecomendacoesCarousel() {
     },
   });
 
-  const goPrev = () => slider?.current?.prev();
-  const goNext = () => slider?.current?.next();
 
   return (
     <section className="recomendacoes-carousel" aria-label="Depoimentos de colegas">
+      <h3>Depoimentos</h3>
       <div ref={sliderRef} className="keen-slider">
         {recomendacoes.map((rec, index) => (
           <div
@@ -36,17 +35,7 @@ export default function RecomendacoesCarousel() {
         ))}
       </div>
 
-      {/* Botões para desktop */}
-      {window.innerWidth > 768 && (
-        <div className="buttons" role="group" aria-label="Controle do carrossel de depoimentos">
-          <button onClick={goPrev} aria-label="Depoimentos anteriores">
-            &lt;
-          </button>
-          <button onClick={goNext} aria-label="Próximos depoimentos">
-            &gt;
-          </button>
-        </div>
-      )}
+    
     </section>
   );
 }

@@ -6,18 +6,13 @@
   .keen-slider {
     display: flex;
     align-items: stretch;
-    gap: 20px;
   }
-  .keen-slider:not([data-keen-slider-disabled]) {
-    .keen-slider__slide{
-        overflow: visible;
-    }
-    overflow: visible;
-  }
+ 
 
   .keen-slider__slide {
     display: flex;
     justify-content: center;
+    padding: 8px 0;
   }
 
   .card {

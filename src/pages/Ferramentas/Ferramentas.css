@@ -1,13 +1,17 @@
 .ferramentas {
   background-color: var(--color-bg);
-  min-height: 100vh;
-  padding-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100%;
+  width: 100%;
 
   .container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 40px 20px;
-    min-height: 70vh;
+    flex: 1;
+   
 
     h2 {
       text-align: center;
